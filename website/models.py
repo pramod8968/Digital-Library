@@ -16,10 +16,10 @@ class Addbook(db.Model):
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'),nullable=False)
-    department = db.relationship('department', backref=db.backref('departments',lazy=True))
+    department = db.relationship('Department', backref=db.backref('departments',lazy=True))
 
     semester_id = db.Column(db.Integer, db.ForeignKey('semester.id'),nullable=False)
-    semester = db.relationship('department', backref=db.backref('semesters',lazy=True)) 
+    semester = db.relationship('Semester', backref=db.backref('semesters',lazy=True)) 
 
     image_1 = db.Column(db.String(150), nullable=False, default='image.jpg')  
     image_2 = db.Column(db.String(150), nullable=False, default='image.jpg') 
