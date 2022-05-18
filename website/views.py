@@ -103,5 +103,5 @@ def addbook():
         flash(f'The book {name} has been added to your database','success')
         db.session.add(addpro)
         db.session.commit()
-        return redirect(url_for('views.Admin_home'))
+        return redirect(url_for('views.admin_home'))
     return render_template('addbook.html',title="Add book Page",form = form,user=current_user, departments=departments, semesters=semesters)
