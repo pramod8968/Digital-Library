@@ -13,6 +13,25 @@
                     {{render_field(form.price, class="form-control", placeholder="Add book price")}}
                     {{render_field(form.discount, class="form-control", placeholder="Add book discount")}}
                     {{render_field(form.stock, class="form-control", placeholder="Add book stock")}}
+
+                    <label for="department"><b>Select Department</b></label>
+                    <select name="department" id="department" class="form-control" required>
+                        <option value="">Select a Department</option>
+                       {% for department in departments %}
+                       <option value="department.id">{{department.name}}</option>
+                        {% endfor %}
+                        
+                    </select>
+
+                    <label for="semester"><b>Select Semester</b></label>
+                    <select name="semester" id="semester" class="form-control" required>
+                        <option value="">Add Semester</option>
+                        {% for semester in semesters %} 
+                        <option value="{{semester.id}}">{{semester.name}}</option>
+                        {% endfor %}
+                        
+                    </select>
+
                     {{render_field(form.discription, class="form-control", placeholder="Add book detail")}}
 
             <div class="container">

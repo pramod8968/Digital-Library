@@ -1,6 +1,17 @@
 from . import db
 from flask_login import UserMixin
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func 
+
+
+class Department(db.Model):
+        id = db.Column(db.Integer, primary_key = True)
+        name = db.Column(db.String(30), nullable = False, unique = True)
+
+class Semester(db.Model):
+        id = db.Column(db.Integer, primary_key = True)
+        name = db.Column(db.String(30), nullable = False, unique = True)
+
+
 
 class User(db.Model,UserMixin):
 
@@ -33,3 +44,5 @@ class User(db.Model,UserMixin):
                 return self.urole
         def get_usn(self):
                 return self.usn
+
+             

@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block title %}Add Department{% endblock %} 
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            {% if departments %}
+            <h1 class="text-center mt-5">Add a Department</h1>
+            <form action="" method="POST">
+                <input type="text" name="department" class="form-control">
+                <input type="submit" value="Add department" class="btn btn-info mt-2">
+            </form>
+            {% else %} 
+            <h1 class="text-center mt-5">Add Semester</h1>
+            <form action="" method="POST">
+                <input type="text" name="semester" class="form-control">
+                <input type="submit" value="Add semester" class="btn btn-info mt-2">
+            </form>
+            {% endif %}
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+{% endblock %}
