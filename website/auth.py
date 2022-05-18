@@ -14,10 +14,9 @@ cursor = conn.cursor()
 @auth.route("/student_login",methods=['GET','POST'])
 def student_login():
     if request.method == 'POST':
-        student_email = request.form.get('student_lemail')
+        susn = request.form.get('susn')
         student_password = request.form.get('student_lpassword')
-        
-        user = User.query.filter_by(email=student_email).first()
+        user = User.query.filter_by(usn=susn).first()
         if user:
             if check_password_hash(user.password,student_password):
                 flash('Logged in Successfully!', category='success')
@@ -26,7 +25,7 @@ def student_login():
             else:
                 flash('Incorrect Password, try again.', category='error')
         else:
-            flash('Email does not exist!', category='error')        
+            flash('USN does not exist!', category='error')        
     return render_template('student_login.html', user=current_user)    
 
 
