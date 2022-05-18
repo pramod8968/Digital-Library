@@ -5,11 +5,7 @@ from . import db
 from .models import User
 auth = Blueprint('auth',__name__)
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, login_required, logout_user, current_user
-
-
-# conn = mysql.connector.connect(host='localhost',user='root',password='root',database='flaskapp')
-# cursor = conn.cursor()
+from flask_login import login_user, logout_user, current_user
 
 @auth.route("/student_login",methods=['GET','POST'])
 def student_login():
