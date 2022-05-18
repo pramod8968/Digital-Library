@@ -11,8 +11,6 @@ class Semester(db.Model):
         id = db.Column(db.Integer, primary_key = True)
         name = db.Column(db.String(30), nullable = False, unique = True)
 
-
-
 class User(db.Model,UserMixin):
 
         __tablename__='user'

@@ -37,7 +37,7 @@ def admin_login():
         
         user = User.query.filter_by(email=admin_email).first()
         if user:
-            if check_password_hash(user.password,admin_password) and (user.role=="Student"):
+            if check_password_hash(user.password,admin_password):
                 flash('Logged in Successfully!', category='success')
                 login_user(user,remember=True)
                 return redirect(url_for('views.admin_home'))
@@ -129,6 +129,37 @@ def teacher_registration():
             return render_template('teacher_login.html',user=current_user)
             
     return render_template('teacher_register.html',user=current_user) 
+
+
+@auth.route("/addanewadmin",methods=['GET','POST'])
+def admin_registration():
+    if request.method == 'POST':
+        admin_uname = request.form.get('aname')
+        admin_uemail = request.form.get('aemail')
+        admin_upassword1 = request.form.get('apassword1')
+        admin_upassword2=request.form.get("apassword2")
+
+        user = User.query.filter_by(email=admin_uemail).first()
+
+        if user:
+            flash('Email already exists.',category='error')
+        elif len(admin_uemail)<4:
+            flash('Email must be greater than 3 characters.',category='error')
+        elif len(admin_uname)<2:
+            flash('First name must be greater than 1 characters.',category='error')
+        elif admin_upassword1 != admin_upassword2:
+            flash('Passwords don\'t match',category='error')
+        elif len(admin_upassword1)<7:
+            flash('Password must be at least 7 characters length',category='error')
+        
+        else:
+            new_user = User(email=admin_uemail, first_name=admin_uname, password=generate_password_hash(admin_upassword1, method='sha256'), urole = "admin",is_active=True,usn="admin")
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Admin Account Created", category='success')
+            return render_template('admin_login.html',user=current_user)
+            
+    return render_template('addmyadmin.html',user=current_user) 
 
 @auth.route('/logout')
 def logout():

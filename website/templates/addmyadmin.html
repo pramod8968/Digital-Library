@@ -1,0 +1,55 @@
+    {% extends "base.html" %} {% block title %}Registration{% endblock %} 
+    {% block content %}
+    <nav class="navbar"></nav>
+    <h2 class="display-4" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 70px;" ><center>WELCOME TO DSCE LIBRARY</center></h2>
+    <br>
+    <br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mt-100">
+                <div class="card-body">
+                    <form class="form" method="post" action="/addanewadmin">
+                        <h3><center>ADMIN REGISTRATION</center></h3>
+                        <br>
+                        <label>Name</label><br>
+                        <input type="name" class="form-control" name="aname" placeholder="Enter your name"><br>
+                        <label>Email</label><br>
+                        <input type="email" class="form-control" name="aemail" placeholder="Enter your email"><br>
+                        <label>Password</label><br>
+                        <input type="password" class="form-control" name="apassword1" placeholder="Enter your password"><br>
+                        <label>Confirm Password</label><br>
+                        <input type="password" class="form-control" name="apassword2" placeholder="Confirm Passowrd"><br>
+                        <input type="submit" class="btn btn-primary btn-block btn-lg" value="Register">
+                        <br>
+                        <br>
+                    </form>
+                </div>
+            </div>
+            
+            
+
+        </div>
+        <div class="col-md-2">
+            
+        </div>
+        <div class="col-md-6">
+            <h1 class="text-light display-4" style="font-size: 70px;">Welcome to the World of Virtual Library by Dayananda Sagar University</h1>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
