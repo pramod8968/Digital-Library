@@ -3,7 +3,7 @@ from flask_wtf.file import FileAllowed,FileField,FileRequired
 from wtforms import Form, IntegerField, StringField,BooleanField,TextAreaField, validators
 
 
-class Addbooks(Form):
+class Addbook(Form):
     name = StringField('Name',[validators.DataRequired()])
     price = IntegerField('Price',[validators.DataRequired()])
     discount = IntegerField('Discount', default=0)

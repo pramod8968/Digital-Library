@@ -3,8 +3,8 @@ from flask_login import login_required, current_user, logout_user
 from flask import flash
 from flask import url_for
 from . import db,photos
-from website.forms import Addbooks
-from .models import Department,Semester 
+from website.forms import Addbook
+from .models import Department,Semester,Addbook 
 import secrets
 
 from functools import wraps
@@ -88,9 +88,20 @@ def addsemester():
 def addbook():
     departments = Department.query.all()
     semesters = Semester.query.all()
-    form = Addbooks(request.form)
+    form = Addbook(request.form)
     if request.method == "POST":
-        photos.save(request.files.get('image_1'),name=secrets.token_hex(10) + ".")
-        photos.save(request.files.get('image_2'),name=secrets.token_hex(10) + ".")
-        photos.save(request.files.get('image_3'),name=secrets.token_hex(10) + ".")
+        name = form.name.data
+        price = form.price.data
+        discount = form.discount.data 
+        stock = form.stock.data 
+        desc = form.discription.data
+        department = request.form.get('department')
+        semester = request.form.get('semester')
+        image_1 = photos.save(request.files.get('image_1'),name=secrets.token_hex(10) + ".")
+        image_2 = photos.save(request.files.get('image_2'),name=secrets.token_hex(10) + ".")
+        image_3 = photos.save(request.files.get('image_3'),name=secrets.token_hex(10) + ".")
+        addpro = Addbook(name=name, price=price, discount=discount,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2=image_2,image_3=image_3)
+        flash(f'The product {name} has been added to your database','success')
+        db.session.commit()
+        return redirect(url_for('views.Admin_home'))
     return render_template('addbook.html',title="Add book Page",form = form,user=current_user, departments=departments, semesters=semesters)
