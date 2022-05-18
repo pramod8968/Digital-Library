@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
-from flask_uploads import IMAGES, UploadSet, configure_uploads
+from flask_uploads import IMAGES, UploadSet, configure_uploads, patch_request_class
 
 import os
 
@@ -12,6 +12,7 @@ db = SQLAlchemy()
 DB_NAME="database.db"
 
 photos = UploadSet('photos', IMAGES)
+
 def create_app():
     app = Flask(__name__)
     app.config['RBAC_USE_WHITE'] = True
@@ -23,7 +24,8 @@ def create_app():
     configure_uploads(app,photos) 
     MAX_CONTENT_LENGTH=None
     db.init_app(app)
-
+    patch_request_class(app)
+    
     from .views import views
     from .auth import auth 
 

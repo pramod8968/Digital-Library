@@ -3,10 +3,9 @@ from flask_login import login_required, current_user, logout_user
 from flask import flash
 from flask import url_for
 from . import db,photos
-from website.forms import Addbook
+from website.forms import Addbooks
 from .models import Department,Semester,Addbook 
 import secrets
-
 from functools import wraps
 
 def requires_access_level(access_level):
@@ -88,7 +87,7 @@ def addsemester():
 def addbook():
     departments = Department.query.all()
     semesters = Semester.query.all()
-    form = Addbook(request.form)
+    form = Addbooks(request.form)
     if request.method == "POST":
         name = form.name.data
         price = form.price.data
