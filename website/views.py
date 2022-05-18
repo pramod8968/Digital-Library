@@ -2,9 +2,10 @@ from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import login_required, current_user, logout_user
 from flask import flash
 from flask import url_for
-from . import db
+from . import db,photos
 from website.forms import Addbooks
-from .models import Department,Semester
+from .models import Department,Semester 
+import secrets
 
 from functools import wraps
 
@@ -88,4 +89,8 @@ def addbook():
     departments = Department.query.all()
     semesters = Semester.query.all()
     form = Addbooks(request.form)
+    if request.method == "POST":
+        photos.save(request.files.get('image_1'),name=secrets.token_hex(10) + ".")
+        photos.save(request.files.get('image_2'),name=secrets.token_hex(10) + ".")
+        photos.save(request.files.get('image_3'),name=secrets.token_hex(10) + ".")
     return render_template('addbook.html',title="Add book Page",form = form,user=current_user, departments=departments, semesters=semesters)

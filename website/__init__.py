@@ -2,16 +2,26 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+from flask_uploads import IMAGES, UploadSet, configure_uploads
 
 import os
+
+basedir=os.path.abspath(os.path.dirname(__file__))
+
 db = SQLAlchemy()
 DB_NAME="database.db"
 
+photos = UploadSet('photos', IMAGES)
 def create_app():
     app = Flask(__name__)
     app.config['RBAC_USE_WHITE'] = True
     app.config['SECRET_KEY']='Darshan D M Project 1'
     app.config['SQLALCHEMY_DATABASE_URI']= f'sqlite:///{DB_NAME}'
+    app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static/images')
+
+
+    configure_uploads(app,photos) 
+    MAX_CONTENT_LENGTH=None
     db.init_app(app)
 
     from .views import views
