@@ -1,5 +1,5 @@
-    {% extends "base.html" %} {% block title %}Teacher Login{% endblock %} 
-    {% block content %} 
+    {% extends "base.html" %} {% block title %}Registration{% endblock %} 
+    {% block content %}
     <nav class="navbar"></nav>
     <h2 class="display-4" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 70px;" ><center>WELCOME TO DSCE LIBRARY</center></h2>
     <br>
@@ -9,21 +9,26 @@
         <div class="col-md-4">
             <div class="card mt-100">
                 <div class="card-body">
-                    <form class="form" method="post" action="teacher_login">
-                        <h3><center>TEACHER LOGIN</center></h3>
+                    <form class="form" method="post" action="/teacher_registration">
+                        <h3><center>TEACHER REGISTRATION</center></h3>
                         <br>
+                        <label>Name</label><br>
+                        <input type="name" class="form-control" name="tname" placeholder="Enter your name"><br>
                         <label>Email</label><br>
-                        <input type="email" class="form-control" name="teacher_lemail" placeholder="Enter your email"><br>
+                        <input type="email" class="form-control" name="temail" placeholder="Enter your email"><br>
                         <label>Password</label><br>
-                        <input type="password" class="form-control" name="teacher_lpassword" placeholder="Enter your password"><br>
-                        <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
+                        <input type="password" class="form-control" name="tpassword1" placeholder="Enter your password"><br>
+                        <label>Confirm Password</label><br>
+                        <input type="password" class="form-control" name="tpassword2" placeholder="Confirm Passowrd"><br>
+                        <input type="submit" class="btn btn-primary btn-block btn-lg" value="Register">
                         <br>
                         <br>
-                        <!-- <h5>Are you an admin?<a href="/admin_login">Click here </a>to Login</h5>
+                         <!--<h5>Are you an admin?<a href="/admin_registration">Click here </a>to Register</h5>
                         <br>
-                        <h5>Are you a student?<a href="/student_login">Click here </a>to Login</h5>
-                        <br> -->
-                        <h5>Are you a new user?<a href="/teacher_registration">Click here </a>to Register</h5>
+                        <h5>Are you a teacher?<a href="/teacher_registration">Click here </a>to Register</h5>
+                        <br> 
+                        <h5>Already user?<a href="/student_login">Click here </a>to Login</h5>-->
+
                     </form>
                 </div>
             </div>

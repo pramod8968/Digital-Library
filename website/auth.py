@@ -55,7 +55,7 @@ def teacher_login():
         teacher_password = request.form.get('teacher_lpassword')
         user = User.query.filter_by(email=teacher_email).first()
         if user:
-            if check_password_hash(user.password,teacher_password) and (user.role=="Teacher"):
+            if check_password_hash(user.password,teacher_password):
                 flash('Logged in Successfully!', category='success')
                 login_user(user,remember=True)
                 return redirect(url_for('views.teacher_home'))
@@ -68,15 +68,18 @@ def teacher_login():
 @auth.route("/student_registration",methods=['GET','POST'])
 def student_registration():
     if request.method == 'POST':
-        student_uname = request.form.get('student_uname')
-        student_uemail = request.form.get('student_uemail')
-        student_upassword1 = request.form.get('student_upassword1')
-        student_upassword2=request.form.get("student_upassword2")
+        student_uname = request.form.get('sname')
+        student_uemail = request.form.get('semail')
+        student_upassword1 = request.form.get('spassword1')
+        student_upassword2=request.form.get("spassword2")
+        student_usn = request.form.get("susn")
 
         user = User.query.filter_by(email=student_uemail).first()
-
+        userusn = User.query.filter_by(usn=student_usn).first()
         if user:
             flash('Email already exists.',category='error')
+        if userusn:
+            flash('USN already exists',category='error')
         elif len(student_uemail)<4:
             flash('Email must be greater than 3 characters.',category='error')
         elif len(student_uname)<2:
@@ -87,24 +90,24 @@ def student_registration():
             flash('Password must be at least 7 characters length',category='error')
         
         else:
-            new_user = User(email=student_uemail, first_name=student_uname, password=generate_password_hash(student_upassword1, method='sha256'), urole = "student",is_active=True)
+            new_user = User(email=student_uemail, first_name=student_uname, password=generate_password_hash(student_upassword1, method='sha256'), urole = "student",is_active=True,usn=student_usn)
             #new_user.roles.append(Role(name='student'))
     
             db.session.add(new_user)
             db.session.commit()
-            flash("Account Created", category='success')
-            return render_template('student_login.html')
+            flash("Student Account Created", category='success')
+            return render_template('student_login.html',user=current_user)
             
-    return render_template('register.html', user=current_user) 
+    return render_template('student_register.html', user=current_user) 
 
  
 @auth.route("/teacher_registration",methods=['GET','POST'])
 def teacher_registration():
     if request.method == 'POST':
-        teacher_uname = request.form.get('teacher_uname')
-        teacher_uemail = request.form.get('teacher_uemail')
-        teacher_upassword1 = request.form.get('teacher_upassword1')
-        teacher_upassword2=request.form.get("teacher_upassword2")
+        teacher_uname = request.form.get('tname')
+        teacher_uemail = request.form.get('temail')
+        teacher_upassword1 = request.form.get('tpassword1')
+        teacher_upassword2=request.form.get("tpassword2")
 
         user = User.query.filter_by(email=teacher_uemail).first()
 
@@ -120,13 +123,13 @@ def teacher_registration():
             flash('Password must be at least 7 characters length',category='error')
         
         else:
-            new_user = User(email=teacher_uemail, first_name=teacher_uname, password=generate_password_hash(teacher_upassword1, method='sha256'), urole = "teacher",is_active=True)
+            new_user = User(email=teacher_uemail, first_name=teacher_uname, password=generate_password_hash(teacher_upassword1, method='sha256'), urole = "teacher",is_active=True,usn="Teacher")
             db.session.add(new_user)
             db.session.commit()
-            flash("Account Created", category='success')
-            return render_template('student_login.html',user=current_user)
+            flash("Teacher Account Created", category='success')
+            return render_template('teacher_login.html',user=current_user)
             
-    return render_template('register.html',user=current_user) 
+    return render_template('teacher_register.html',user=current_user) 
 
 @auth.route('/logout')
 def logout():

@@ -7,6 +7,7 @@ from website.forms import Addbooks
 views = Blueprint('views', __name__)
 
 @views.route('/')
+@views.route('/home')
 def home():
     return render_template("home_page.html", user=current_user)
 
