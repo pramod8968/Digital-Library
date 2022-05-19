@@ -9,5 +9,5 @@ dep = Blueprint('dep', __name__)
 @requires_access_level("admin")
 def departments():
     dept = Department.query.order_by(Department.id.desc()).all()
-    return render_template('departments.html', title="Departments Page",departments=dept)
+    return render_template('departments.html', title="Departments Page",departments=dept,user=current_user)
 

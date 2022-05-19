@@ -29,12 +29,14 @@ def create_app():
     from .views import views
     from .auth import auth
     from .add import add
-    from .departments import dep 
+    from .departments import dep
+    from .semesters import sem 
 
     app.register_blueprint(views,url_prefix='/')
     app.register_blueprint(auth,url_prefix='/')
     app.register_blueprint(add,url_prefix='/')
     app.register_blueprint(dep,url_prefix='/')
+    app.register_blueprint(sem,url_prefix='/')
     from .models import User
 
     create_database(app)
