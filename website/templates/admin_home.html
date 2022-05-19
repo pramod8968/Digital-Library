@@ -1,6 +1,5 @@
 {% extends "base.html" %} {% block title %}Admin Home{% endblock %} 
 {% block content %}
-<h2><center>Congrats!!! You have successfully logged in!!!!!</center></h2>
 <br>
 <br>
 <div class="container">
@@ -18,25 +17,62 @@
                   <li><a class="dropdown-item" href="/addsemester">Add Semester</a></li>
                 </ul>
               </li>
-
-
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Delete
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="/addbook">Delete Book</a></li>
-                  <li><a class="dropdown-item" href="/adddepartment">Delete Department</a></li>
-                  <li><a class="dropdown-item" href="/addsemester">Delete Semester</a></li>
-                </ul>
-              </li>
             </ul>
-            <div class="card-body">
-            </div>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-4">
+      <div class="card mt-100">
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search Book" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+          
+      </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card mt-100">
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search ISBN" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
     </div>
 </div>
+
 </div>
+</div>
+<br>
+<div class="container">
+  <div class="card">
+  <table class="table table-sm table-condensed table-striped">
+    <thead>
+      <th>Sr</th>
+      <th>ISBN No.</th>
+      <th>Book Name</th>
+      <th>Price</th>
+      <th>Available Copies</th>
+      <th>Department</th>
+      <th>Image</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </thead>
+    <tbody>
+      {% for book in books %} 
+      <tr>
+        <td>{{loop.index}}</td>
+        <td>{{book.isbn}}</td>
+        <td>{{book.name}}</td>
+        <td>{{book.price}}</td>
+        <td>{{book.stock}}</td>
+        <td>{{book.department.name}}</td>
+        <td><img src="{{url_for('static',filename='images/'+ book.image_1 )}}" width="50" height="40"></td>
+        <td>Edit</td>
+        <td>Delete</td>
+      </tr>
+      {% endfor %} 
+    </tbody>
+  </table>
+</div>
+</div>
+
 {% endblock %}

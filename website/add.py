@@ -40,15 +40,15 @@ def addbook():
     if request.method == "POST":
         name = form.name.data
         price = form.price.data
-        discount = form.discount.data 
+        isbn = form.isbn.data 
         stock = form.stock.data 
         desc = form.discription.data
         department = request.form.get('department')
-        semester = request.form.get('semester')
-        image_1 = photos.save(request.files.get('image_1'),name=secrets.token_hex(10) + ".")
+        semester = request.form.get('semester') 
+        image_1 = photos.save(request.files.get('image_1'),name=secrets.token_hex(10) + ".")       
         image_2 = photos.save(request.files.get('image_2'),name=secrets.token_hex(10) + ".")
         image_3 = photos.save(request.files.get('image_3'),name=secrets.token_hex(10) + ".")
-        addpro = Addbook(name=name, price=price, discount=discount,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2=image_2,image_3=image_3)
+        addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG")
         flash(f'The book {name} has been added to your database','success')
         db.session.add(addpro)
         db.session.commit()

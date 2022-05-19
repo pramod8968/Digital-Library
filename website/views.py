@@ -40,7 +40,8 @@ def student_home():
 @login_required
 @requires_access_level("admin")
 def admin_home():
-    return render_template("admin_home.html", user=current_user)
+    books = Addbook.query.all()
+    return render_template("admin_home.html", user=current_user,books=books)
 
 @views.route('/teacher_home')
 @login_required
