@@ -1,4 +1,5 @@
 from .views import *
+import pandas as pd
 
 add = Blueprint('add', __name__)
 
@@ -53,3 +54,31 @@ def addbook():
         db.session.commit()
         return redirect(url_for('views.admin_home'))
     return render_template('addbook.html',title="Add book Page",form = form,user=current_user, departments=departments, semesters=semesters)
+
+
+
+@add.route('/addbulk',methods=['GET','POST'])
+@requires_access_level("admin")
+def addbookbulk():
+    f = request.files.getlist("file")
+    for file in f:
+        fname=file.filename
+        fname = fname.split(".",1)
+        fname = fname[0]
+
+        if file:
+            df = pd.DataFrame(pd.read_excel(file))
+            print(df)
+            for isbn in df.isbn:
+                name = df.loc[df["isbn"]==isbn, 'Book_Name'].values[0]
+                price = df.loc[df["isbn"]==isbn, 'Price'].values[0]
+                stock = df.loc[df["isbn"]==isbn, 'stock'].values[0]
+                desc = df.loc[df["isbn"]==isbn, 'desc'].values[0]
+                department = df.loc[df["isbn"]==isbn, 'department_id'].values[0]
+                semester = df.loc[df["isbn"]==isbn, 'semester_id'].values[0]
+                image_1 = "No IMG"
+                addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG")
+                db.session.add(addpro)
+                db.session.commit()
+        flash('Books Data Added Successfully', category='success')  
+    return render_template('addbulkbooks.html',user=current_user)

@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %}Admin Home{% endblock %} 
+{% block content %}
+
+
+
+<form class="grid" action="/addbulk" method="POST" enctype="multipart/form-data">
+    <center>
+    <label for="name">Upload the XLSX File</label>
+    <br/>
+  <br/>
+  <input type="file" id="file" name="file" multiple/>
+</center> 
+  <br/>
+    <center><input class="file_submit" type="Submit"></center>
+  </form>
+
+{% endblock %}
