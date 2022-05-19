@@ -1,11 +1,14 @@
 {% extends "base.html" %} {% block title %}Admin Home{% endblock %} 
 {% block content %}
 
-
-
+<center>
+  <br/>
+  <br/>
+  <br/>
+<div class="card" style="width : 40rem;">  
 <form class="grid" action="/addbulk" method="POST" enctype="multipart/form-data">
     <center>
-    <label for="name">Upload the XLSX File</label>
+    <label for="name"><h2>Upload the XLSX File</h2></label>
     <br/>
   <br/>
   <input type="file" id="file" name="file" multiple/>
@@ -13,5 +16,6 @@
   <br/>
     <center><input class="file_submit" type="Submit"></center>
   </form>
-
+  </div>
+</center>
 {% endblock %}
