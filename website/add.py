@@ -13,7 +13,6 @@ def adddepartment():
         flash(f'The Department {getdepartment} was added to your database','success')
         db.session.commit()
         return redirect(url_for('add.adddepartment'))
-        
     return render_template('add_department.html', departments='departments', user=current_user)
 
 @add.route('/addsemester', methods=['GET','POST'])
@@ -46,8 +45,8 @@ def addbook():
         department = request.form.get('department')
         semester = request.form.get('semester') 
         image_1 = photos.save(request.files.get('image_1'),name=secrets.token_hex(10) + ".")       
-        image_2 = photos.save(request.files.get('image_2'),name=secrets.token_hex(10) + ".")
-        image_3 = photos.save(request.files.get('image_3'),name=secrets.token_hex(10) + ".")
+        #image_2 = photos.save(request.files.get('image_2'),name=secrets.token_hex(10) + ".")
+        #image_3 = photos.save(request.files.get('image_3'),name=secrets.token_hex(10) + ".")
         addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG")
         flash(f'The book {name} has been added to your database','success')
         db.session.add(addpro)

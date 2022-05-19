@@ -6,7 +6,7 @@ from wtforms import Form, IntegerField, StringField,BooleanField,TextAreaField, 
 class Addbooks(Form):
     name = StringField('Name',[validators.DataRequired()])
     price = IntegerField('Price',[validators.DataRequired()])
-    isbn = IntegerField('isbn', default=0)
+    isbn = IntegerField('ISBN', default=0)
     stock = IntegerField('Stock',[validators.DataRequired()])
     discription = TextAreaField('Discription',[validators.DataRequired()])
 
