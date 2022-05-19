@@ -72,10 +72,10 @@ def addbookbulk():
             for isbn in df.isbn:
                 name = df.loc[df["isbn"]==isbn, 'Book_Name'].values[0]
                 price = df.loc[df["isbn"]==isbn, 'Price'].values[0]
-                stock = df.loc[df["isbn"]==isbn, 'stock'].values[0]
+                stock = int(df.loc[df["isbn"]==isbn, 'stock'].values[0])
                 desc = df.loc[df["isbn"]==isbn, 'desc'].values[0]
-                department = df.loc[df["isbn"]==isbn, 'department_id'].values[0]
-                semester = df.loc[df["isbn"]==isbn, 'semester_id'].values[0]
+                department = int(df.loc[df["isbn"]==isbn, 'department_id'].values[0])
+                semester = int(df.loc[df["isbn"]==isbn, 'semester_id'].values[0])
                 image_1 = "No IMG"
                 addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG")
                 db.session.add(addpro)

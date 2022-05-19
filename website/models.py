@@ -37,10 +37,6 @@ class Category(db.Model):
         return '<Category %r>' % self.name
 
 
-
-
-
-
 class Department(db.Model):
         id = db.Column(db.Integer, primary_key = True)
         name = db.Column(db.String(30), nullable = False, unique = True)
@@ -61,7 +57,7 @@ class User(db.Model,UserMixin):
         usn = db.Column(db.String(10))
 
         def __init__(self,first_name,password,email,is_active,urole,usn):
-                self.username = first_name
+                self.first_name = first_name
                 self.password = password
                 self.email = email
                 self.is_active = is_active
@@ -75,7 +71,7 @@ class User(db.Model,UserMixin):
         def activate_user(self):
                 self.is_active = True         
         def get_username(self):
-                return self.username
+                return self.first_name
         def get_urole(self):
                 return self.urole
         def get_usn(self):
