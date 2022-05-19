@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %}Admin Home{% endblock %} 
+{% block content %}
+<br>
+<br>
+<div class="container">
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mt-100">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Add
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/addbook">Add Book</a></li>
+                  <li><a class="dropdown-item" href="/adddepartment">Add Department</a></li>
+                  <li><a class="dropdown-item" href="/addsemester">Add Semester</a></li>
+                </ul>
+              </li>
+            </ul>
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
+</div>
+<div class="container">
+  <table class="table table-sm table-condensed table-striped">
+    <thead>
+      <th>Sr</th>
+      <th>Book</th>
+      <th>Price</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </thead>
+    <tbody>
+      {% for book in books %} 
+      <tr>
+        <td>{{loop.index}}</td>
+        <td>{{book.name}}</td>
+        <td>{{book.price}}</td>
+        <td>{{book.stock}}</td>
+        <td>{{book.department.name}}</td>
+        <td><img src="{{url_for('static',filename='images/'+ book.image_1 )}}" width="50" height="40"></td>
+        <td>Edit</td>
+        <td>Delete</td>
+      </tr>
+      {% endfor %} 
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
