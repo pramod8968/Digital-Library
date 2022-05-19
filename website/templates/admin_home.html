@@ -1,4 +1,42 @@
 {% extends "base.html" %} {% block title %}Admin Home{% endblock %} 
 {% block content %}
 <h2><center>Congrats!!! You have successfully logged in!!!!!</center></h2>
+<br>
+<br>
+<div class="container">
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mt-100">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Add
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/addbook">Add Book</a></li>
+                  <li><a class="dropdown-item" href="/adddepartment">Add Department</a></li>
+                  <li><a class="dropdown-item" href="/addsemester">Add Semester</a></li>
+                </ul>
+              </li>
+
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Delete
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/addbook">Delete Book</a></li>
+                  <li><a class="dropdown-item" href="/adddepartment">Delete Department</a></li>
+                  <li><a class="dropdown-item" href="/addsemester">Delete Semester</a></li>
+                </ul>
+              </li>
+            </ul>
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
+</div>
 {% endblock %}
