@@ -69,8 +69,8 @@
         <td>{{book.department.name}}</td>
         <td>{{book.semester.name}}</td>
         <td><img src="{{url_for('static',filename='images/'+ book.image_1 )}}" width="50" height="40"></td>
-        <td>Edit</td>
-        <td>Delete</td>
+        <td><a href="{{url_for('add.updatebook', id=book.id)}}" class="btn btn-info btn-sm">Edit </a></td>
+        <td><a href="{{url_for('add.updatebook', id=book.id)}}" class="btn btn-danger btn-sm">Delete </a></td>
       </tr>
       {% endfor %} 
     </tbody>

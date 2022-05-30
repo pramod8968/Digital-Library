@@ -1,11 +1,11 @@
 
 from flask_wtf.file import FileAllowed,FileField,FileRequired
-from wtforms import Form, IntegerField, StringField,BooleanField,TextAreaField, validators
+from wtforms import Form, IntegerField, StringField,BooleanField,TextAreaField, validators,DecimalField
 
 
 class Addbooks(Form):
     name = StringField('Name',[validators.DataRequired()])
-    price = IntegerField('Price',[validators.DataRequired()])
+    price = DecimalField('Price',[validators.DataRequired()])
     isbn = IntegerField('ISBN', default=0)
     stock = IntegerField('Stock',[validators.DataRequired()])
     discription = TextAreaField('Discription',[validators.DataRequired()])

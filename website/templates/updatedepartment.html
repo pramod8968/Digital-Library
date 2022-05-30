@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %}Update Department{% endblock %} 
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            {% if updatedepartment %}
+            <h1 class="text-center mt-5 ">Add Department</h1>
+            <form action="" method="POST">
+                <input type="text" name="department" class="form-control" value="{{updatedepartment.name}}">
+                <input type="submit" value="Update department" class="btn btn-info mt-2">
+            </form>
+            <a href="{{url_for('dep.departments')}}" class="btn btn-warning" style="margin-top:-65px; margin-left: 180px;"  >Cancel</a>
+            {% else %} 
+            <h1 class="text-center mt-5">Add Semester</h1>
+            <form action="" method="POST">
+                <input type="text" name="semester" class="form-control" value="{{updatesemester.name}}">
+                <input type="submit" value="Update semester" class="btn btn-info mt-2">
+            </form>
+            <a href="{{url_for('sem.semesters')}}" class="btn btn-warning" style="margin-top:-65px; margin-left: 180px;">Cancel</a>
+            {% endif %}
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+{% endblock %}
