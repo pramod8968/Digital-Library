@@ -148,8 +148,23 @@ def updatebook(id):
     form.discription.data = book.desc
     return render_template('updatebook.html', form = form, user=current_user, departments = departments, semesters = semesters, book = book )
 
+@add.route('/deletebook/<int:id>', methods=['POST'])
+@requires_access_level("admin")
+def deletebook(id):
+    book = Addbook.query.get_or_404(id) 
+    if request.method == "POST":
+        if request.files.get('image_1'):
+            try:
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + book.image_1))
+            except Exception as e:
+                print(e)
+        db.session.delete(book)  
+        db.session.commit()
+        flash(f'The book {book.name} was deleted successfully from your database.', 'success') 
+        return redirect(url_for('views.admin_home')) 
 
-
+    flash(f"Can't delete the book", 'danger')            
+    return redirect(url_for('views.admin_home'))
 
 
 @add.route('/addbulk',methods=['GET','POST'])
