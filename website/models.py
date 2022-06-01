@@ -1,3 +1,4 @@
+from email.policy import default
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func 
@@ -14,6 +15,7 @@ class Addbook(db.Model):
     stock = db.Column(db.Integer,nullable=False)
     desc = db.Column(db.Text, nullable=False)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    
 
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'),nullable=False)
     department = db.relationship('Department', backref=db.backref('departments',lazy=True))

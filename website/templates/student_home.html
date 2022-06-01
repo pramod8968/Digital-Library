@@ -1,4 +1,133 @@
 {% extends "base.html" %} {% block title %}Student Home{% endblock %} 
 {% block content %}
-<h2><center>Congrats!!! You have successfully logged in!!!!!</center></h2>
+<br>
+<br>
+<!-- show bar -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mt-100">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Departments
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for department in departments %}
+                      <li><a class="dropdown-item" href="{{url_for('views.get_department', id = department.id)}}">{{department.name}}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </li>
+                </ul>
+            </div>
+        </div>
+        
+
+        <!-- show bar -->
+        <div class="col-md-4">
+            <div class="card mt-100">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Semesters
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for semester in semesters %}
+                      <li><a class="dropdown-item" href="{{url_for('views.get_semester', id = semester.id)}}">{{semester.name}}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </li>
+                </ul>
+            </div>
+        </div>
+
+<!-- search navbar -->
+<div class="col-md-4">
+    <div class="card mt-100">
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search Book" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>  
+    </div>
+</div>
+<!-- search navbar -->
+
+<div class="container">
+    <div class="row">
+
+{% if department %} 
+{% for d in department %}
+        <div class="col-md-3 mt-3">
+            <div class="card">
+                <img src="{{url_for('static', filename = 'images/' + d.image_1)}}" alt="{{d.name}}" class="card-img-top" height="200">
+                <div class="card-body">
+                    <h5 class="text-center">{{d.name}}</h5>
+                    <p class="text-center">Available Copies: {{d.stock}}</p>
+                </div>
+                <div class="card-footer">
+                    
+                <a href="#" class="float-left btn btn-sm btn-primary">Details</a>
+                {% if d.stock >0 %}
+                <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                {% else %} 
+                <a href="#" class="float-right btn btn-sm btn-warning">Notify Me</a>
+                {% endif %}
+            </div> 
+        </div>
+    </div> 
+    {% endfor %}
+
+<!-- for semester -->
+
+{% elif semester %} 
+{% for s in semester %}
+        <div class="col-md-3 mt-3">
+            <div class="card">
+                <img src="{{url_for('static', filename = 'images/' + s.image_1)}}" alt="{{s.name}}" class="card-img-top" height="200">
+                <div class="card-body">
+                    <h5 class="text-center">{{s.name}}</h5>
+                    <p class="text-center">Available Copies: {{s.stock}}</p>
+                </div>
+                <div class="card-footer">
+                    
+                <a href="#" class="float-left btn btn-sm btn-primary">Details</a>
+                {% if s.stock >0 %}
+                <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                {% else %} 
+                <a href="#" class="float-right btn btn-sm btn-warning">Notify Me</a>
+                {% endif %}
+            </div> 
+        </div>
+    </div> 
+{% endfor %}
+
+<!-- for semester -->
+
+{% else %} 
+        {% for book in books.items %}
+        <div class="col-md-3 mt-3">
+            <div class="card">
+                <img src="{{url_for('static', filename = 'images/' + book.image_1)}}" alt="{{book.name}}" class="card-img-top" height="200">
+                <div class="card-body">
+                    <h5 class="text-center">{{book.name}}</h5>
+                    <p class="text-center">Available Copies: {{book.stock}}</p>
+                </div>
+                <div class="card-footer">
+                    
+                <a href="#" class="float-left btn btn-sm btn-primary">Details</a>
+                {% if book.stock >0 %}
+                <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                {% else %} 
+                <a href="#" class="float-right btn btn-sm btn-warning">Notify Me</a>
+                {% endif %}
+            </div> 
+        </div>
+    </div> 
+    {% endfor %}
+    {% endif %} 
+
+
+    
+    </div>
+</div>
 {% endblock %}

@@ -34,7 +34,31 @@ def home():
 @login_required
 @requires_access_level("student")
 def student_home():
-    return render_template("student_home.html", user=current_user)
+    # books = Addbook.query.filter(Addbook.stock > 0)
+    page = request.args.get('page',1, type=int)
+    departments = Department.query.join(Addbook, (Department.id == Addbook.department_id)).all()
+    semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
+    books = Addbook.query.filter(Addbook.stock>=0).paginate(page = page, per_page = 10)
+    return render_template("student_home.html", user=current_user, books = books, departments = departments, semesters = semesters)
+
+@views.route('/department/<int:id>')
+@login_required
+@requires_access_level("student")
+def get_department(id):
+    department = Addbook.query.filter_by(department_id = id)
+    departments = Department.query.join(Addbook, (Department.id == Addbook.department_id)).all()
+    semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
+    return render_template('student_home.html', department = department, user = current_user, departments = departments, semesters = semesters)
+
+@views.route('/semester/<int:id>')
+@login_required
+@requires_access_level("student")
+def get_semester(id):
+    semester = Addbook.query.filter_by(semester_id = id)
+    semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
+    departments = Department.query.join(Addbook, (Department.id == Addbook.department_id)).all()
+    return render_template('student_home.html', semester = semester, user = current_user, semesters = semesters, departments = departments)    
+
 
 @views.route('/admin_home')
 @login_required
