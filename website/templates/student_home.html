@@ -56,7 +56,7 @@
     <div class="row">
 
 {% if department %} 
-{% for d in department %}
+{% for d in department.items %}
         <div class="col-md-3 mt-3">
             <div class="card">
                 <img src="{{url_for('static', filename = 'images/' + d.image_1)}}" alt="{{d.name}}" class="card-img-top" height="200">
@@ -76,11 +76,39 @@
         </div>
     </div> 
     {% endfor %}
+</div>
+
+<div class="row">
+    <div class="col text-center">
+    {% if department.has_prev %} 
+    <a href="{{url_for('views.get_department',id = get_dep.id,  page = department.prev_num)}}" class="btn btn-outline-info btn-sm mt-3">Previous</a>
+    {% endif %}   
+    {% if department.total > 8 %} 
+    {% for page_num in department.iter_pages(left_edge=1, right_edge=2, left_current=1, right_current=2) %}
+    {% if page_num %}
+    {% if department.page == page_num %} 
+    <a href="{{url_for('views.get_department',id = get_dep.id,  page = page_num)}}" class="btn btn-info btn-sm mt-3">{{page_num}}</a>
+    {% else %}
+    <a href="{{url_for('views.get_department',id = get_dep.id,  page = page_num)}}" class="btn btn-outline-info btn-sm mt-3">{{page_num}}</a>
+    {% endif %}
+    {% else %} 
+    ... 
+    {% endif %} 
+    {% endfor %}
+    {% endif %}
+ 
+    {% if department.has_next %} 
+    <a href="{{url_for('views.get_department', id = get_dep.id,  page = department.next_num)}}" class="btn btn-outline-info btn-sm mt-3">Next</a>
+    {% endif %}
+    </div>
+</div>
 
 <!-- for semester -->
 
+<div class="row">
 {% elif semester %} 
-{% for s in semester %}
+{% for s in semester.items %}
+
         <div class="col-md-3 mt-3">
             <div class="card">
                 <img src="{{url_for('static', filename = 'images/' + s.image_1)}}" alt="{{s.name}}" class="card-img-top" height="200">
@@ -100,9 +128,36 @@
         </div>
     </div> 
 {% endfor %}
+</div>
+
+
+<div class="row">
+    <div class="col text-center">
+    {% if semester.has_prev %} 
+    <a href="{{url_for('views.get_semester',id = get_sem.id,  page = semester.prev_num)}}" class="btn btn-outline-info btn-sm mt-3">Previous</a>
+    {% endif %} 
+    {% if semester.total > 8 %}   
+    {% for page_num in semester.iter_pages(left_edge=1, right_edge=2, left_current=1, right_current=2) %}
+    {% if page_num %}
+    {% if semester.page == page_num %} 
+    <a href="{{url_for('views.get_semester',id = get_sem.id,  page = page_num)}}" class="btn btn-info btn-sm mt-3">{{page_num}}</a>
+    {% else %}
+    <a href="{{url_for('views.get_semester',id = get_sem.id,  page = page_num)}}" class="btn btn-outline-info btn-sm mt-3">{{page_num}}</a>
+    {% endif %}
+    {% else %} 
+    ... 
+    {% endif %} 
+    {% endfor %}
+    {% endif %}
+ 
+    {% if semester.has_next %} 
+    <a href="{{url_for('views.get_semester', id = get_sem.id,  page = semester.next_num)}}" class="btn btn-outline-info btn-sm mt-3">Next</a>
+    {% endif %}
+    </div>
+</div>
 
 <!-- for semester -->
-
+<div class="row">
 {% else %} 
         {% for book in books.items %}
         <div class="col-md-3 mt-3">
@@ -124,10 +179,38 @@
         </div>
     </div> 
     {% endfor %}
+</div>
+
+<div class="row">
+    <div class="col text-center">
+    {% if books.has_prev %} 
+    <a href="{{url_for('views.student_home', page = books.prev_num)}}" class="btn btn-outline-info btn-sm mt-3">Previous</a>
+    {% endif %} 
+    {% if books.total > 8 %}   
+    {% for page_num in books.iter_pages(left_edge=1, right_edge=2, left_current=1, right_current=2) %}
+    {% if page_num %}
+    {% if books.page == page_num %} 
+    <a href="{{url_for('views.student_home', page = page_num)}}" class="btn btn-info btn-sm mt-3">{{page_num}}</a>
+    {% else %}
+    <a href="{{url_for('views.student_home', page = page_num)}}" class="btn btn-outline-info btn-sm mt-3">{{page_num}}</a>
+    {% endif %}
+    {% else %} 
+    ... 
+    {% endif %} 
+    {% endfor %}
+    {% endif %}
+
+    {% if books.has_next %} 
+    <a href="{{url_for('views.student_home', page = books.next_num)}}" class="btn btn-outline-info btn-sm mt-3">Next</a>
+    {% endif %}
+    </div>
+</div>
+    
     {% endif %} 
 
 
     
     </div>
 </div>
+<br>
 {% endblock %}
