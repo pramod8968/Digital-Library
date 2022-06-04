@@ -66,7 +66,7 @@
                 </div>
                 <div class="card-footer">
                     
-                <a href="#" class="float-left btn btn-sm btn-primary">Details</a>
+                <a href="{{url_for('views.single_page', id = d.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
                 {% if d.stock >0 %}
                 <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
                 {% else %} 
@@ -118,7 +118,7 @@
                 </div>
                 <div class="card-footer">
                     
-                <a href="#" class="float-left btn btn-sm btn-primary">Details</a>
+                <a href="{{url_for('views.single_page', id = s.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
                 {% if s.stock >0 %}
                 <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
                 {% else %} 
@@ -169,7 +169,7 @@
                 </div>
                 <div class="card-footer">
                     
-                <a href="#" class="float-left btn btn-sm btn-primary">Details</a>
+                <a href="{{url_for('views.single_page', id = book.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
                 {% if book.stock >0 %}
                 <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
                 {% else %} 

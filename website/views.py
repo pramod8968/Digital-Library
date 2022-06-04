@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import login_required, current_user, logout_user
 from flask import flash
 from flask import url_for
+from numpy import product
 from . import db,photos
 from website.forms import Addbooks
 from .models import Department,Semester,Addbook 
@@ -40,6 +41,16 @@ def student_home():
     semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
     books = Addbook.query.filter(Addbook.stock>=0).order_by(Addbook.id.desc()).paginate(page = page, per_page = 8)
     return render_template("student_home.html", user=current_user, books = books, departments = departments, semesters = semesters)
+
+
+@views.route('/book/<int:id>')
+@login_required
+@requires_access_level("student")
+def single_page(id):
+    book = Addbook.query.get_or_404(id)
+    departments = Department.query.join(Addbook, (Department.id == Addbook.department_id)).all()
+    semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
+    return render_template('single_page.html', user = current_user, book = book, departments = departments, semesters = semesters )    
 
 @views.route('/department/<int:id>')
 @login_required
