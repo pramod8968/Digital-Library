@@ -1,6 +1,5 @@
-from flask import render_template, request, redirect, flash, url_for
+from flask import render_template, request, redirect, session
 from flask_login import login_required, current_user, logout_user
-from requests import session
 from .views import *
 
 cart = Blueprint('cart', __name__)
@@ -13,7 +12,7 @@ def AddCart():
         book_id = request.form.get('book_id')
         book = Addbook.query.filter_by(id = book_id).first()
         if book_id and request.method == "POST":
-            DictItems = {book_id:{'name':book.name, 'price':book.price, 'image':book.image_1}}
+            DictItems = {book_id:{'name':book.name,'image':book.image_1}}
 
             if 'Shopcart' in session:
                 print(session['Shoppingcart'])
