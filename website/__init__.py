@@ -33,15 +33,13 @@ def create_app():
     from .views import views
     from .auth import auth
     from .add import add
-    from .departments import dep
-    from .semesters import sem 
+    from .show import show
     from .cart import cart
 
     app.register_blueprint(views,url_prefix='/')
     app.register_blueprint(auth,url_prefix='/')
     app.register_blueprint(add,url_prefix='/')
-    app.register_blueprint(dep,url_prefix='/')
-    app.register_blueprint(sem,url_prefix='/')
+    app.register_blueprint(show,url_prefix='/')
     app.register_blueprint(cart,url_prefix='/')
     from .models import User
 

@@ -16,7 +16,6 @@ def MagerDicts(dict1, dict2):
 @requires_access_level("student")
 def AddCart():
     try:
-
         book_id = request.form.get('book_id')
         book = Addbook.query.filter_by(id = book_id).first()
         if book_id and request.method == "POST":

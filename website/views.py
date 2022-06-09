@@ -100,3 +100,11 @@ def teacher_home():
 @views.route('/aboutUs')
 def about_us():
     return render_template("About_Us.html", user=current_user)
+
+@views.route('/dashboard')
+def dashboard():
+    return render_template("dashboard.html", user=current_user)
+
+@views.route('/edit_profile')
+def edit_profile():
+    return render_template("edit_profile.html", user=current_user)

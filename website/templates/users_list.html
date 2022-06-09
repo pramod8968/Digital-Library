@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block title %}Users List{% endblock %} 
+{% block content %}
+
+
+
+<!--Navbar 2-->
+<br>
+<br>
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+          <div class="card mt-100">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Show
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="/admin_home">Books</a></li>
+                    <li><a class="dropdown-item" href="/departments">Departments</a></li>
+                    <li><a class="dropdown-item" href="/semesters">Semesters</a></li>
+                  </ul>
+                </li>
+              </ul>
+          </div>
+      </div>
+  
+      <div class="col-md-4">
+        <div class="card mt-100">
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search Department or Semester" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+    </div>
+  
+  </div>
+  </div>
+  <br/>
+
+
+<!--Navbar 2-->
+
+
+<br/>
+<div class="container">
+  <div class="card">
+  <table class="table table-sm table-condensed table-striped">
+    <thead>
+      <th>Sr</th>
+      <th>Student Name</th>
+      <th>USN</th>
+      <th>Email</th>
+      <th>Semester</th>
+      <th>Branch</th>
+      <th>Image</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </thead>
+    <tbody>
+      {% for user in students %} 
+      <tr>
+        <td>{{loop.index}}</td>
+        <td>{{user.first_name}}</td>
+        <td>{{user.usn}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.stock}}</td>
+        <td>{{user.email}}</td>
+        <td></td>
+        <td><a href="#" class="btn btn-info btn-sm">Edit </a></td>
+        <td>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#">
+        Delete
+        </button>
+        </td>
+      </tr>
+{% endfor %}
+
+{% endblock %}
