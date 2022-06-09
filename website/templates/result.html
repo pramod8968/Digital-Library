@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block title %}Student Home{% endblock %} 
+{% block content %}
+<br>
+<br>
+<!-- show bar -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mt-100">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Departments
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for department in departments %}
+                      <li><a class="dropdown-item" href="{{url_for('views.get_department', id = department.id)}}">{{department.name}}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </li>
+                </ul>
+            </div>
+        </div>
+        
+
+        <!-- show bar -->
+        <div class="col-md-4">
+            <div class="card mt-100">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Semesters
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for semester in semesters %}
+                      <li><a class="dropdown-item" href="{{url_for('views.get_semester', id = semester.id)}}">{{semester.name}}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </li>
+                </ul>
+            </div>
+        </div>
+
+<!-- search navbar -->
+<div class="col-md-4">
+    <div class="card mt-100">
+      <form class="d-flex" action="{{url_for('views.result')}}">
+        <input class="form-control me-2" type="search" placeholder="Search Book Name/ISBN" aria-label="Search" name="q">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>  
+    </div>
+</div>
+<!-- search navbar -->
+
+<div class="container">
+    <div class="row">
+
+
+<!-- for semester -->
+<div class="row">
+
+        {% for book in books %}
+        <div class="col-md-3 mt-3">
+            <div class="card">
+                <img src="{{url_for('static', filename = 'images/' + book.image_1)}}" alt="{{book.name}}" class="card-img-top" height="200">
+                <div class="card-body">
+                    <h5 class="text-center">{{book.name}}</h5>
+                    <p class="text-center">Available Copies: {{book.stock}}</p>
+                </div>
+                <div class="card-footer">
+                    
+                <a href="{{url_for('views.single_page', id = book.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
+                {% if book.stock >0 %}
+                <form action="{{url_for('cart.AddCart')}}" method="POST">
+                    <input type="hidden" name="book_id" value="{{book.id}}">
+                    <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
+                </form>
+                {% else %} 
+                <a href="#" class="float-right btn btn-sm btn-warning">Notify Me</a>
+                {% endif %}
+            </div> 
+        </div>
+    </div> 
+    {% endfor %}
+</div>
+
+<br>
+{% endblock %}

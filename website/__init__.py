@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 from flask_uploads import IMAGES, UploadSet, configure_uploads
+from flask_msearch import Search
 
 import os
 
@@ -10,6 +11,8 @@ basedir=os.path.abspath(os.path.dirname(__file__))
 
 db = SQLAlchemy()
 DB_NAME="database.db"
+search = Search()
+
 
 photos = UploadSet('photos', IMAGES)
 
@@ -24,6 +27,7 @@ def create_app():
     configure_uploads(app,photos) 
     MAX_CONTENT_LENGTH=None
     db.init_app(app)
+    search.init_app(app)
     # patch_request_class(app)
     
     from .views import views

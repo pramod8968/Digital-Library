@@ -3,9 +3,9 @@ from flask_login import login_required, current_user, logout_user
 from flask import flash
 from flask import url_for
 from numpy import product
-from . import db,photos
+from . import db,photos,search
 from website.forms import Addbooks
-from .models import Department,Semester,Addbook 
+from .models import Department,Semester,Addbook, User 
 import secrets
 from functools import wraps
 
@@ -26,6 +26,15 @@ def requires_access_level(access_level):
 
 views = Blueprint('views', __name__)
 
+def departments():
+    departments = Department.query.join(Addbook, (Department.id == Addbook.department_id)).all()
+    return departments
+
+def semesters():
+    semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
+    return semesters
+
+
 @views.route('/')
 @views.route('/home')
 def home():
@@ -37,20 +46,24 @@ def home():
 def student_home():
     # books = Addbook.query.filter(Addbook.stock > 0)
     page = request.args.get('page',1, type=int)
-    departments = Department.query.join(Addbook, (Department.id == Addbook.department_id)).all()
-    semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
     books = Addbook.query.filter(Addbook.stock>=0).order_by(Addbook.id.desc()).paginate(page = page, per_page = 8)
-    return render_template("student_home.html", user=current_user, books = books, departments = departments, semesters = semesters)
+    return render_template("student_home.html", user=current_user, books = books, departments = departments(), semesters = semesters())
 
+
+@views.route('/result')
+@login_required
+@requires_access_level("student")
+def result():
+    searchword =request.args.get('q')
+    books = Addbook.query.msearch(searchword, fields=['name','desc', 'isbn'])
+    return render_template('result.html', user=current_user, books=books, departments = departments(), semesters = semesters())
 
 @views.route('/book/<int:id>')
 @login_required
 @requires_access_level("student")
 def single_page(id):
     book = Addbook.query.get_or_404(id)
-    departments = Department.query.join(Addbook, (Department.id == Addbook.department_id)).all()
-    semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
-    return render_template('single_page.html', user = current_user, book = book, departments = departments, semesters = semesters )    
+    return render_template('single_page.html', user = current_user, book = book, departments = departments(), semesters = semesters() )    
 
 @views.route('/department/<int:id>')
 @login_required
@@ -59,9 +72,7 @@ def get_department(id):
     page = request.args.get('page',1, type=int)
     get_dep = Department.query.filter_by(id=id).first_or_404()
     department = Addbook.query.filter_by(department = get_dep).paginate(page = page, per_page = 8)
-    departments = Department.query.join(Addbook, (Department.id == Addbook.department_id)).all()
-    semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
-    return render_template('student_home.html', department = department, user = current_user, departments = departments, semesters = semesters, get_dep = get_dep)
+    return render_template('student_home.html', department = department, user = current_user, departments = departments(), semesters = semesters(), get_dep = get_dep)
 
 @views.route('/semester/<int:id>')
 @login_required
@@ -70,9 +81,7 @@ def get_semester(id):
     page = request.args.get('page',1, type=int)
     get_sem = Semester.query.filter_by(id=id).first_or_404()
     semester = Addbook.query.filter_by(semester = get_sem).paginate(page = page, per_page = 8)
-    semesters = Semester.query.join(Addbook, (Semester.id == Addbook.semester_id)).all()
-    departments = Department.query.join(Addbook, (Department.id == Addbook.department_id)).all()
-    return render_template('student_home.html', semester = semester, user = current_user, semesters = semesters, departments = departments, get_sem = get_sem)    
+    return render_template('student_home.html', semester = semester, user = current_user, semesters = semesters(), departments = departments(), get_sem = get_sem)    
 
 
 @views.route('/admin_home')

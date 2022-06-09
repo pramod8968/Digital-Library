@@ -1,0 +1,53 @@
+{% extends "base.html" %} {% block title %}Cart{% endblock %}
+{% block content %} 
+<br>
+<b><center>
+    <h3>YOUR CART</h3>
+</center></b>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="card">
+        <table class="table table-sm">
+            <thead>
+                <th>Sr</th>
+                <th>Image</th>
+                <th>Book Name</th>
+                <th>Department</th>
+                <th>Semester</th>
+                <th>ISBN</th>
+                <th>Approval Status</th>
+                <th>Place Order</th>
+                <th>Delete</th>
+            </thead>
+            <tbody>
+                {% for key, book in session['Shoppingcart'].items() %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td><img src="{{url_for('static', filename = 'images/' + book.image )}}"
+                        alt="{{book.name}}" width="50" height = "30" >
+                    </td>
+                    <td>{{book.name}}</td>
+                    <td>{{book.department}}</td>
+                    <td>{{book.semester}}</td>
+                    <td>{{book.isbn}}</td>
+                    <td></td>
+                    <td><a href="#" class="btn btn-sm btn-primary">Order</a></td>
+                    <td><a href="{{url_for('cart.deleteitem', id=key)}}" class="btn btn-sm btn-danger">Delete</a></td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        <table class="table table-sm">
+            <tr>
+                <td>
+                    <a href="{{url_for('cart.emptycart')}}" class="btn btn-sm btn-danger float-right mr-5">Empty Cart</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>  
+</div>
+
+{% endblock %}

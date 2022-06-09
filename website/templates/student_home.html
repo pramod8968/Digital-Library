@@ -44,8 +44,8 @@
 <!-- search navbar -->
 <div class="col-md-4">
     <div class="card mt-100">
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search Book" aria-label="Search">
+      <form class="d-flex" action="{{url_for('views.result')}}">
+        <input class="form-control me-2" type="search" placeholder="Search Book Name/ISBN" aria-label="Search" name="q">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>  
     </div>
@@ -68,7 +68,10 @@
                     
                 <a href="{{url_for('views.single_page', id = d.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
                 {% if d.stock >0 %}
-                <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                <form action="{{url_for('cart.AddCart')}}" method="POST">
+                    <input type="hidden" name="book_id" value="{{d.id}}">
+                    <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
+                </form>
                 {% else %} 
                 <a href="#" class="float-right btn btn-sm btn-warning">Notify Me</a>
                 {% endif %}
@@ -120,7 +123,10 @@
                     
                 <a href="{{url_for('views.single_page', id = s.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
                 {% if s.stock >0 %}
-                <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                <form action="{{url_for('cart.AddCart')}}" method="POST">
+                    <input type="hidden" name="book_id" value="{{s.id}}">
+                    <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
+                </form>
                 {% else %} 
                 <a href="#" class="float-right btn btn-sm btn-warning">Notify Me</a>
                 {% endif %}
@@ -171,7 +177,10 @@
                     
                 <a href="{{url_for('views.single_page', id = book.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
                 {% if book.stock >0 %}
-                <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                <form action="{{url_for('cart.AddCart')}}" method="POST">
+                    <input type="hidden" name="book_id" value="{{book.id}}">
+                    <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
+                </form>
                 {% else %} 
                 <a href="#" class="float-right btn btn-sm btn-warning">Notify Me</a>
                 {% endif %}
