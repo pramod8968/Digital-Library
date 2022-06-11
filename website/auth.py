@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import render_template, request,flash 
 from . import db
 import re
-from .models import User
+from .models import User, Department, Semester
 auth = Blueprint('auth',__name__)
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user
@@ -62,6 +62,8 @@ def teacher_login():
 
 @auth.route("/student_registration",methods=['GET','POST'])
 def student_registration():
+    departments = Department.query.all()
+    semesters = Semester.query.all()
     pat = re.compile(r"1DS[0-9][0-9][A-Z][A-Z][0-9][0-9][0-9]")
     if request.method == 'POST':
         student_uname = request.form.get('sname')
@@ -69,6 +71,8 @@ def student_registration():
         student_upassword1 = request.form.get('spassword1')
         student_upassword2=request.form.get("spassword2")
         student_usn = request.form.get("susn")
+        department = request.form.get('department')
+        semester = request.form.get('semester') 
 
         user = User.query.filter_by(email=student_uemail).first()
         userusn = User.query.filter_by(usn=student_usn).first()
@@ -86,7 +90,7 @@ def student_registration():
             flash('Password must be at least 7 characters length',category='error')
         else:
             if(pat.match(student_usn)):
-                new_user = User(email=student_uemail, first_name=student_uname, password=generate_password_hash(student_upassword1, method='sha256'), urole = "student",is_active=True,usn=student_usn)
+                new_user = User(email=student_uemail, first_name=student_uname, password=generate_password_hash(student_upassword1, method='sha256'), urole = "student",is_active=True,usn=student_usn,department_id=department,semester_id=semester)
                 db.session.add(new_user)
                 db.session.commit()
                 flash("Student Account Created", category='success')
@@ -94,7 +98,7 @@ def student_registration():
             else:
                 flash('USN should be in Proper Format',category='error')
                 return render_template('student_register.html', user=current_user) 
-    return render_template('student_register.html', user=current_user) 
+    return render_template('student_register.html', user=current_user, departments=departments, semesters=semesters) 
 
  
 @auth.route("/teacher_registration",methods=['GET','POST'])

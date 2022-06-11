@@ -22,6 +22,25 @@
                         <input type="password" class="form-control" name="spassword2" placeholder="Confirm Passowrd"><br>
                         <label>Enter USN</label><br>
                         <input type="name" class="form-control" name="susn" placeholder="Enter USN"><br>
+                        
+                        <label for="department"><b>Select Department</b></label>
+                        <select name="department" id="department" class="form-control" required>
+                            <option value="">Select a Department</option>
+                           {% for department in departments %}
+                           <option value="{{department.id}}">{{department.name}}</option>
+                            {% endfor %}
+                            
+                        </select>
+    
+                        <label for="semester"><b>Select Semester</b></label>
+                        <select name="semester" id="semester" class="form-control" required>
+                            <option value="">Add Semester</option>
+                            {% for semester in semesters %} 
+                            <option value="{{semester.id}}">{{semester.name}}</option>
+                            {% endfor %}
+                            
+                        </select>
+
                         <input type="submit" class="btn btn-primary btn-block btn-lg" value="Register">
                         <br>
                         <br>

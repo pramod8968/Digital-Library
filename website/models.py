@@ -1,4 +1,5 @@
 from email.policy import default
+from pickle import TRUE
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func 
@@ -60,13 +61,22 @@ class User(db.Model,UserMixin):
         urole = db.Column(db.String(80))
         usn = db.Column(db.String(10))
 
-        def __init__(self,first_name,password,email,is_active,urole,usn):
+
+        department_id = db.Column(db.Integer, db.ForeignKey('department.id'),nullable=True)
+        department = db.relationship('Department', backref=db.backref('user_departments',lazy=True))
+
+        semester_id = db.Column(db.Integer, db.ForeignKey('semester.id'),nullable=True)
+        semester = db.relationship('Semester', backref=db.backref('user_semesters',lazy=True)) 
+
+        def __init__(self,first_name,password,email,is_active,urole,usn,department_id=0,semester_id=0):
                 self.first_name = first_name
                 self.password = password
                 self.email = email
                 self.is_active = is_active
                 self.urole = urole
                 self.usn = usn
+                self.department_id = department_id
+                self.semester_id=semester_id
 
         def get_id(self):
                 return self.id
@@ -80,5 +90,7 @@ class User(db.Model,UserMixin):
                 return self.urole
         def get_usn(self):
                 return self.usn
+        def __repr__(self):
+            return '<Post %r>' % self.name
 
              
