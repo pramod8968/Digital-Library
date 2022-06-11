@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import render_template, request,flash 
-
 from . import db
+import re
 from .models import User
 auth = Blueprint('auth',__name__)
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -62,6 +62,7 @@ def teacher_login():
 
 @auth.route("/student_registration",methods=['GET','POST'])
 def student_registration():
+    pat = re.compile(r"1DS[0-9][0-9][A-Z][A-Z][0-9][0-9][0-9]")
     if request.method == 'POST':
         student_uname = request.form.get('sname')
         student_uemail = request.form.get('semail')
@@ -83,16 +84,16 @@ def student_registration():
             flash('Passwords don\'t match',category='error')
         elif len(student_upassword1)<7:
             flash('Password must be at least 7 characters length',category='error')
-        
         else:
-            new_user = User(email=student_uemail, first_name=student_uname, password=generate_password_hash(student_upassword1, method='sha256'), urole = "student",is_active=True,usn=student_usn)
-            #new_user.roles.append(Role(name='student'))
-    
-            db.session.add(new_user)
-            db.session.commit()
-            flash("Student Account Created", category='success')
-            return render_template('student_login.html',user=current_user)
-            
+            if(pat.match(student_usn)):
+                new_user = User(email=student_uemail, first_name=student_uname, password=generate_password_hash(student_upassword1, method='sha256'), urole = "student",is_active=True,usn=student_usn)
+                db.session.add(new_user)
+                db.session.commit()
+                flash("Student Account Created", category='success')
+                return render_template('student_login.html',user=current_user)
+            else:
+                flash('USN should be in Proper Format',category='error')
+                return render_template('student_register.html', user=current_user) 
     return render_template('student_register.html', user=current_user) 
 
  

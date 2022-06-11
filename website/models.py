@@ -59,12 +59,6 @@ class User(db.Model,UserMixin):
         is_active = db.Column(db.Boolean,default=False)
         urole = db.Column(db.String(80))
         usn = db.Column(db.String(10))
-        
-        # department_id = db.Column(db.Integer, db.ForeignKey('department.id'),nullable=False)
-        # department = db.relationship('Department', backref=db.backref('departments',lazy=True))
-
-        # semester_id = db.Column(db.Integer, db.ForeignKey('semester.id'),nullable=False)
-        # semester = db.relationship('Semester', backref=db.backref('semesters',lazy=True)) 
 
         def __init__(self,first_name,password,email,is_active,urole,usn):
                 self.first_name = first_name
