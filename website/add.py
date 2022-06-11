@@ -101,13 +101,14 @@ def addbook():
         price = form.price.data
         isbn = form.isbn.data 
         stock = form.stock.data 
+        available_copies = stock
         desc = form.discription.data
         department = request.form.get('department')
         semester = request.form.get('semester') 
         image_1 = photos.save(request.files.get('image_1'),name=secrets.token_hex(10) + ".")       
         #image_2 = photos.save(request.files.get('image_2'),name=secrets.token_hex(10) + ".")
         #image_3 = photos.save(request.files.get('image_3'),name=secrets.token_hex(10) + ".")
-        addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG")
+        addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG", available_copies = available_copies)
         flash(f'The book {name} has been added to your database','success')
         db.session.add(addpro)
         db.session.commit()
@@ -128,7 +129,9 @@ def updatebook(id):
         book.name = form.name.data
         book.price = form.price.data 
         book.isbn = form.isbn.data
+        ac = form.stock.data - book.stock 
         book.stock = form.stock.data 
+        book.available_copies = book.available_copies + ac
         book.desc = form.discription.data
 
         if request.files.get('image_1'):
