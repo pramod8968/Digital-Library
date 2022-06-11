@@ -57,9 +57,8 @@ def result():
     searchword =request.args.get('q')
     books = Addbook.query.msearch(searchword, fields=['name','desc', 'isbn'])
     # if searchword not in books:
-    #     return render_template('booknotfound.html',user=current_user)
-    # else:
-    return render_template('result.html', user=current_user, books=books, departments = departments(), semesters = semesters())
+    #     return render_template('booknotfound.html',user=current_user) 
+    return render_template('result.html', user=current_user, books=books, departments = departments(), semesters = semesters(),searchword = searchword)
 
 @views.route('/book/<int:id>')
 @login_required

@@ -33,13 +33,22 @@ class Addbook(db.Model):
     def __repr__(self):
         return '<Post %r>' % self.name
 
+class Stats(db.Model):
+        id = db.Column(db.Integer, primary_key = True)
+        book_id = db.Column(db.Integer, db.ForeignKey('addbook.id'), nullable = True)
+        book = db.relationship('Addbook', backref=db.backref('books', lazy = True))
 
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+        date_stamp =db.Column(db.Date, nullable = False)
 
-    def __repr__(self):
-        return '<Category %r>' % self.name
+        demand_time = db.Column(db.String(20), default="Normal")
+        
+        dt = db.Column(db.Float, default = 0.1)
+        number_of_issues = db.Column(db.Integer, default = 0)
+        number_notify_me = db.Column(db.Integer, default = 0)
+        unique_visits = db.Column(db.Integer, default= 0)
+        demand = db.Column(db.Float, default = 0)
+
+
 
 
 class Department(db.Model):
