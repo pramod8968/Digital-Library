@@ -51,21 +51,22 @@
       <th>Student Name</th>
       <th>USN</th>
       <th>Email</th>
-      <th>Semester</th>
       <th>Branch</th>
+      <th>Semester</th>
       <th>Image</th>
       <th>Edit</th>
       <th>Delete</th>
     </thead>
     <tbody>
       {% for user in students %} 
+      {% if user.urole=='student' %}
       <tr>
         <td>{{loop.index}}</td>
         <td>{{user.first_name}}</td>
         <td>{{user.usn}}</td>
         <td>{{user.email}}</td>
-        <td>{{user.stock}}</td>
-        <td>{{user.email}}</td>
+        <td>{{user.department.name}}</td>
+        <td>{{user.semester.name}}</td>
         <td></td>
         <td><a href="#" class="btn btn-info btn-sm">Edit </a></td>
         <td>
@@ -75,6 +76,7 @@
         </button>
         </td>
       </tr>
+{% endif %}
 {% endfor %}
 
 {% endblock %}
