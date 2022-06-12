@@ -33,13 +33,29 @@ class Addbook(db.Model):
     def __repr__(self):
         return '<Post %r>' % self.name
 
+class Stats(db.Model):
+        id = db.Column(db.Integer, primary_key = True)
+        week_stamp =db.Column(db.String(10), nullable = False)
+        book_id = db.Column(db.Integer, db.ForeignKey('addbook.id'), nullable = True)
+        book = db.relationship('Addbook', backref=db.backref('books', lazy = True))
 
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+        demand_time = db.Column(db.String(20), default="Normal")
+        
+        dt = db.Column(db.Float, default = 0.1)
+        number_of_issues = db.Column(db.Integer, default = 0)
+        number_notify_me = db.Column(db.Integer, default = 0)
+        unique_visits = db.Column(db.Integer, default= 0)
+        demand = db.Column(db.Float, default = 0)
 
-    def __repr__(self):
-        return '<Category %r>' % self.name
+        def __init__(self,book_id,week_stamp,demand_time="Normal",dt=0.1,number_of_issues=0,number_notify_me=0,unique_visits=0,demand=0):
+                self.book_id=book_id
+                self.week_stamp=week_stamp
+                self.demand_time=demand_time
+                self.dt = dt
+                self.number_of_issues=number_of_issues
+                self.number_notify_me=number_notify_me
+                self.unique_visits=unique_visits
+                self.demand=demand
 
 
 class Department(db.Model):

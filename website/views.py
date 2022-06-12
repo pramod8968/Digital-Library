@@ -8,6 +8,7 @@ from website.forms import Addbooks
 from .models import Department,Semester,Addbook, User 
 import secrets
 from functools import wraps
+from .track import uvt
 
 def requires_access_level(access_level):
     def decorator(f):
@@ -57,14 +58,14 @@ def result():
     searchword =request.args.get('q')
     books = Addbook.query.msearch(searchword, fields=['name','desc', 'isbn'])
     # if searchword not in books:
-    #     return render_template('booknotfound.html',user=current_user)
-    # else:
-    return render_template('result.html', user=current_user, books=books, departments = departments(), semesters = semesters())
+    #     return render_template('booknotfound.html',user=current_user) 
+    return render_template('result.html', user=current_user, books=books, departments = departments(), semesters = semesters(),searchword = searchword)
 
 @views.route('/book/<int:id>')
 @login_required
 @requires_access_level("student")
 def single_page(id):
+    uvt(id)
     book = Addbook.query.get_or_404(id)
     return render_template('single_page.html', user = current_user, book = book, departments = departments(), semesters = semesters() )    
 
@@ -111,3 +112,4 @@ def dashboard():
 @views.route('/edit_profile')
 def edit_profile():
     return render_template("edit_profile.html", user=current_user)
+
