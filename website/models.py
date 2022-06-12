@@ -59,7 +59,7 @@ class Stats(db.Model):
 
 class Issues_data(db.Model):
         id = db.Column(db.Integer, primary_key = True)
-        time_stamp = db.Column(db.Datetime,nullable=True)
+        time_stamp = db.Column(db.DateTime,nullable=True)
         book_id = db.Column(db.Integer, db.ForeignKey('addbook.id'), nullable = True)
         book = db.relationship('Addbook', backref=db.backref('books_issue', lazy = True))
 
