@@ -57,6 +57,18 @@ class Stats(db.Model):
                 self.unique_visits=unique_visits
                 self.demand=demand
 
+class Issues_data(db.Model):
+        id = db.Column(db.Integer, primary_key = True)
+        time_stamp = db.Column(db.Datetime,nullable=True)
+        book_id = db.Column(db.Integer, db.ForeignKey('addbook.id'), nullable = True)
+        book = db.relationship('Addbook', backref=db.backref('books_issue', lazy = True))
+
+        user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = True)
+        user = db.relationship('User', backref=db.backref('issuer_name', lazy = True))
+
+        status = db.Column(db.String(30), nullable=True)
+
+
 class Department(db.Model):
         id = db.Column(db.Integer, primary_key = True)
         name = db.Column(db.String(30), nullable = False, unique = True)
