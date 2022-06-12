@@ -35,6 +35,7 @@ class Addbook(db.Model):
 
 class Stats(db.Model):
         id = db.Column(db.Integer, primary_key = True)
+<<<<<<< HEAD
         week_stamp =db.Column(db.String(10), nullable = False)
         book_id = db.Column(db.Integer, db.ForeignKey('addbook.id'), nullable = True)
         book = db.relationship('Addbook', backref=db.backref('books', lazy = True))
@@ -56,6 +57,22 @@ class Stats(db.Model):
                 self.number_notify_me=number_notify_me
                 self.unique_visits=unique_visits
                 self.demand=demand
+=======
+        book_id = db.Column(db.Integer, db.ForeignKey('addbook.id'), nullable = True)
+        book = db.relationship('Addbook', backref=db.backref('books', lazy = True))
+
+        date_stamp =db.Column(db.Date, nullable = False)
+
+        demand_time = db.Column(db.String(20), default="Normal")
+        
+        dt = db.Column(db.Float, default = 0.1)
+        number_of_issues = db.Column(db.Integer, default = 0)
+        number_notify_me = db.Column(db.Integer, default = 0)
+        unique_visits = db.Column(db.Integer, default= 0)
+        demand = db.Column(db.Float, default = 0)
+
+
+>>>>>>> 0fb368ee407ebb63e24e7384dff6f62dc5321834
 
 
 class Department(db.Model):
