@@ -1,11 +1,11 @@
-from flask import Blueprint, render_template, request, redirect, flash, url_for
+from flask import Blueprint, render_template, request, redirect, flash, url_for,session
 from flask_login import login_required, current_user, logout_user
 from flask import flash
 from flask import url_for
 from numpy import product
 from . import db,photos,search
 from website.forms import Addbooks
-from .models import Department,Semester,Addbook, User 
+from .models import Department,Semester,Addbook, User , StudentCart
 import secrets
 from functools import wraps
 from .track import uvt
@@ -86,6 +86,40 @@ def get_semester(id):
     get_sem = Semester.query.filter_by(id=id).first_or_404()
     semester = Addbook.query.filter_by(semester = get_sem).paginate(page = page, per_page = 8)
     return render_template('student_home.html', semester = semester, user = current_user, semesters = semesters(), departments = departments(), get_sem = get_sem)    
+
+
+@views.route('/getcart')
+@login_required
+@requires_access_level("student")  
+def getcart():
+    if current_user.is_authenticated:
+        student_id = current_user.id
+        invoice = secrets.token_hex(5)
+        try:
+            cart = StudentCart(invoice = invoice, student_id = student_id, carts = session['Shoppingcart'])
+            print(invoice)
+            db.session.add(cart)
+            db.session.commit()
+            session.pop('Shoppingcart')
+            flash('Your order request has been sent for approval, stay tuned :)', 'success')
+            return redirect(url_for('views.orders', invoice = invoice))
+        except Exception as e:
+            print(e)
+            flash('Something went wrong while getting order!!!', 'warning')
+            return redirect(url_for('cart.getCart'))
+
+
+@views.route('/orders/<invoice>')
+@login_required
+@requires_access_level("student")  
+def orders(invoice):
+    if current_user.is_authenticated:
+        student_id = current_user.id 
+        student = User.query.filter_by(id = student_id).first()
+        carts = StudentCart.query.filter_by(student_id = student_id).order_by(StudentCart.id.desc()).first()
+    else:
+        return redirect(url_for('auth.student_login'))    
+    return render_template('order.html', invoice = invoice, student = student, carts = carts, user = current_user)    
 
 
 @views.route('/admin_home')

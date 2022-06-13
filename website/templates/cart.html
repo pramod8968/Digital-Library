@@ -16,7 +16,6 @@
                 <th>Department</th>
                 <th>Semester</th>
                 <th>ISBN</th>
-                <th>Approval Status</th>
                 <th>Place Order</th>
                 <th>Delete</th>
             </thead>
@@ -31,8 +30,7 @@
                     <td>{{book.department}}</td>
                     <td>{{book.semester}}</td>
                     <td>{{book.isbn}}</td>
-                    <td></td>
-                    <td><a href="#" class="btn btn-sm btn-primary">Order</a></td>
+                    <td><a href="{{url_for('views.getcart')}}" class="btn btn-sm btn-primary">Order</a></td>
                     <td><a href="{{url_for('cart.deleteitem', id=key)}}" class="btn btn-sm btn-danger">Delete</a></td>
                 </tr>
                 {% endfor %}

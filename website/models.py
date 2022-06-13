@@ -1,8 +1,12 @@
 from email.policy import default
+from enum import unique
 from pickle import TRUE
+
+from sqlalchemy import null
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func 
+import json
 
 
 from datetime import datetime
@@ -56,6 +60,36 @@ class Stats(db.Model):
                 self.number_notify_me=number_notify_me
                 self.unique_visits=unique_visits
                 self.demand=demand
+
+
+class JsonEncodedDict(db.TypeDecorator):
+        impl = db.Text
+
+        def process_bind_param(self, value, dialect):
+                if value is None:
+                        return '{}'
+                else:
+                        return json.dumps(value)
+                        
+        def process_result_value(self, value, dialect):
+                if value is None:
+                        return {}
+                else:
+                        return json.loads(value)                                
+
+class StudentCart(db.Model):
+        id = db.Column(db.Integer, primary_key = True)
+        invoice = db.Column(db.String(20), unique = True, nullable = False)
+        status = db.Column(db.String(20), default = 'Pending', nullable = False)
+        student_id = db.Column(db.Integer, unique = False, nullable = False)
+        date_created = db.Column(db.DateTime, default = datetime.utcnow, nullable = False)
+        carts = db.Column(JsonEncodedDict)
+
+        def __repr__(self):
+                return '<StudentCart %r>' % self.invoice
+
+
+
 
 class Issues_data(db.Model):
         id = db.Column(db.Integer, primary_key = True)
