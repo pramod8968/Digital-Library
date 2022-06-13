@@ -74,6 +74,8 @@ def getCart():
 @login_required
 @requires_access_level("student")
 def deleteitem(id):
+    if current_user.is_authenticated:
+        student_id = current_user.id
     if 'Shoppingcart' not in session and len(session['Shoppingcart']) <= 0 :
         return redirect(url_for('views.student_home')) 
     try:
@@ -81,7 +83,17 @@ def deleteitem(id):
         for key, item in session['Shoppingcart'].items():
             if int(key) == id:
                 session['Shoppingcart'].pop(key, None)
+
+                cart = Student_Cart.query.filter_by(student_id = student_id).first()
+                if cart:
+                    cart.carts = session['Shoppingcart']
+                    db.session.commit()
+                else:
+                    cart = Student_Cart(student_id = student_id, carts = session['Shoppingcart'])    
+                    db.session.add(cart)
+                    db.session.commit()
                 return redirect(url_for('cart.getCart'))
+
     except Exception as e:
         print(e)
         return redirect(url_for('cart.getCart'))            
@@ -91,12 +103,26 @@ def deleteitem(id):
 @login_required
 @requires_access_level("student")
 def emptycart():
+    if current_user.is_authenticated:
+        student_id = current_user.id
     try:
         session.pop('Shoppingcart', None)
+        cart = Student_Cart.query.filter_by(student_id = student_id).first()
+        if cart:
+            db.session.delete(cart)
+            db.session.commit()
         return redirect(url_for('views.student_home'))
     except Exception as e:
         print(e)
-        
+
+
+@cart.route('/order/<int:book_isbn>')
+@login_required
+@requires_access_level("student")
+def order(book_isbn):
+    pass
+    
+
 
 
 
