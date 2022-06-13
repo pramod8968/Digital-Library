@@ -20,7 +20,7 @@
                 <th>Delete</th>
             </thead>
             <tbody>
-                {% for key, book in session['Shoppingcart'].items() %}
+                {% for key, book in cart_items.items() %}
                 <tr>
                     <td>{{loop.index}}</td>
                     <td><img src="{{url_for('static', filename = 'images/' + book.image )}}"

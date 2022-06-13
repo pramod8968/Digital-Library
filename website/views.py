@@ -5,7 +5,7 @@ from flask import url_for
 from numpy import product
 from . import db,photos,search
 from website.forms import Addbooks
-from .models import Department,Semester,Addbook, User , Student_Order
+from .models import Department,Semester,Addbook, User , Student_Order, Student_Cart
 import secrets
 from functools import wraps
 from .track import uvt
@@ -45,7 +45,13 @@ def home():
 @login_required
 @requires_access_level("student")
 def student_home():
-    # books = Addbook.query.filter(Addbook.stock > 0)
+    if current_user.is_authenticated:
+        student_id = current_user.id
+    cart = Student_Cart.query.filter_by(student_id = student_id).first()
+    if(cart):
+        session['Shoppingcart'] = cart.carts
+    else:
+        session.pop('Shoppingcart', None)
     page = request.args.get('page',1, type=int)
     books = Addbook.query.filter(Addbook.stock>=0).order_by(Addbook.id.desc()).paginate(page = page, per_page = 8)
     return render_template("student_home.html", user=current_user, books = books, departments = departments(), semesters = semesters())
@@ -86,14 +92,6 @@ def get_semester(id):
     get_sem = Semester.query.filter_by(id=id).first_or_404()
     semester = Addbook.query.filter_by(semester = get_sem).paginate(page = page, per_page = 8)
     return render_template('student_home.html', semester = semester, user = current_user, semesters = semesters(), departments = departments(), get_sem = get_sem)    
-
-
-@views.route('/getcart')
-@login_required
-@requires_access_level("student")  
-def getcart():
-    pass
-    
 
 
 @views.route('/orders/<invoice>')

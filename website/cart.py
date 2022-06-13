@@ -24,27 +24,35 @@ def AddCart():
         book = Addbook.query.filter_by(id = book_id).first()
         if book_id and request.method == "POST":
             DictItems = {book_id:{'name':book.name,'image':book.image_1, 'isbn':book.isbn, 'department':book.department.name, 'semester': book.semester.name}}
-
             if 'Shoppingcart' in session:
                 print(session['Shoppingcart'])
                 if book_id in session['Shoppingcart']:
                     print("This product is already in your cart")
                 else:
                     session['Shoppingcart'] = MagerDicts(session['Shoppingcart'], DictItems)
+                    cart = Student_Cart.query.filter_by(student_id = student_id).first()
+                    if cart:
+                        cart.carts = session['Shoppingcart']
+                        db.session.commit()
+                    else:
+                        cart = Student_Cart(student_id = student_id, carts = session['Shoppingcart'])    
+                        db.session.add(cart)
+                        db.session.commit()
                     return redirect(request.referrer)    
             else:
                 session['Shoppingcart'] = DictItems
+                cart = Student_Cart.query.filter_by(student_id = student_id).first()
+                if cart:
+                    cart.carts = session['Shoppingcart']
+                    db.session.commit()
+                else:
+                    cart = Student_Cart(student_id = student_id, carts = session['Shoppingcart'])    
+                    db.session.add(cart)
+                    db.session.commit()
+
                 return redirect(request.referrer)    
 
-            cart = Student_Cart.query.filter_by(id = student_id).first()
-            if cart:
-                cart.carts = session['Shoppingcart']
-                db.session.commit()
-            else:
-                cart = Student_Cart(student_id = student_id, carts = session['Shoppingcart'])    
-                db.session.add(cart)
-                db.session.commit()
-
+            
     except Exception as e :
         print(e)
     finally:
@@ -54,9 +62,12 @@ def AddCart():
 @login_required
 @requires_access_level("student")
 def getCart():
-    if 'Shoppingcart' not in session or len(session['Shoppingcart']) == 0:
-        return redirect(url_for('views.student_home'))
-    return render_template('cart.html', user = current_user)       
+    if current_user.is_authenticated:
+        student_id = current_user.id
+    cart = Student_Cart.query.filter_by(student_id = student_id).first()
+    if(cart):
+        return render_template('cart.html', user = current_user,cart_items=cart.carts)
+    return redirect(url_for('views.student_home'))       
 
 
 @cart.route('/deleteitem/<int:id>')
