@@ -13,6 +13,7 @@ from datetime import datetime
 
 
 class Addbook(db.Model):
+    __tablename__='addbook'
     __searchable__ = ['name', 'desc', 'isbn']    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
@@ -70,23 +71,40 @@ class JsonEncodedDict(db.TypeDecorator):
                         return '{}'
                 else:
                         return json.dumps(value)
-                        
+
         def process_result_value(self, value, dialect):
                 if value is None:
                         return {}
                 else:
                         return json.loads(value)                                
 
-class StudentCart(db.Model):
+class Student_Order(db.Model):
         id = db.Column(db.Integer, primary_key = True)
-        invoice = db.Column(db.String(20), unique = True, nullable = False)
-        status = db.Column(db.String(20), default = 'Pending', nullable = False)
-        student_id = db.Column(db.Integer, unique = False, nullable = False)
-        date_created = db.Column(db.DateTime, default = datetime.utcnow, nullable = False)
+        status = db.Column(db.String(20), default = 'Requested', nullable = False)
+        request_time = db.Column(db.DateTime, nullable = True)
+        approve_time = db.Column(db.DateTime, nullable = True)
+        return_time = db.Column(db.DateTime, nullable = True)
+        returned_time = db.Column(db.DateTime, nullable = True)
+
+        student_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=True)
+        student = db.relationship('User', backref=db.backref('students_order',lazy=True))
+
+        book_id = db.Column(db.Integer, db.ForeignKey('addbook.id'),nullable=True)
+        book = db.relationship('Addbook', backref=db.backref('books_order',lazy=True))
+
+
+class Student_Cart(db.Model):
+        id = db.Column(db.Integer, primary_key = True)  
+
+        student_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=True)
+        student = db.relationship('User', backref=db.backref('students_cart',lazy=True))
+
         carts = db.Column(JsonEncodedDict)
 
-        def __repr__(self):
-                return '<StudentCart %r>' % self.invoice
+
+
+
+
 
 
 

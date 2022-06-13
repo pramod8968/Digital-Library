@@ -1,5 +1,7 @@
 from flask import render_template, request, redirect, session
 from flask_login import login_required, current_user, logout_user
+
+from website.models import Student_Cart
 from .views import *
 
 cart = Blueprint('cart', __name__)
@@ -15,6 +17,8 @@ def MagerDicts(dict1, dict2):
 @login_required
 @requires_access_level("student")
 def AddCart():
+    if current_user.is_authenticated:
+        student_id = current_user.id
     try:
         book_id = request.form.get('book_id')
         book = Addbook.query.filter_by(id = book_id).first()
@@ -31,6 +35,15 @@ def AddCart():
             else:
                 session['Shoppingcart'] = DictItems
                 return redirect(request.referrer)    
+
+            cart = Student_Cart.query.filter_by(id = student_id).first()
+            if cart:
+                cart.carts = session['Shoppingcart']
+                db.session.commit()
+            else:
+                cart = Student_Cart(student_id = student_id, carts = session['Shoppingcart'])    
+                db.session.add(cart)
+                db.session.commit()
 
     except Exception as e :
         print(e)

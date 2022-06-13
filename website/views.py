@@ -5,7 +5,7 @@ from flask import url_for
 from numpy import product
 from . import db,photos,search
 from website.forms import Addbooks
-from .models import Department,Semester,Addbook, User , StudentCart
+from .models import Department,Semester,Addbook, User , Student_Order
 import secrets
 from functools import wraps
 from .track import uvt
@@ -92,34 +92,15 @@ def get_semester(id):
 @login_required
 @requires_access_level("student")  
 def getcart():
-    if current_user.is_authenticated:
-        student_id = current_user.id
-        invoice = secrets.token_hex(5)
-        try:
-            cart = StudentCart(invoice = invoice, student_id = student_id, carts = session['Shoppingcart'])
-            print(invoice)
-            db.session.add(cart)
-            db.session.commit()
-            session.pop('Shoppingcart')
-            flash('Your order request has been sent for approval, stay tuned :)', 'success')
-            return redirect(url_for('views.orders', invoice = invoice))
-        except Exception as e:
-            print(e)
-            flash('Something went wrong while getting order!!!', 'warning')
-            return redirect(url_for('cart.getCart'))
+    pass
+    
 
 
 @views.route('/orders/<invoice>')
 @login_required
 @requires_access_level("student")  
 def orders(invoice):
-    if current_user.is_authenticated:
-        student_id = current_user.id 
-        student = User.query.filter_by(id = student_id).first()
-        carts = StudentCart.query.filter_by(student_id = student_id).order_by(StudentCart.id.desc()).first()
-    else:
-        return redirect(url_for('auth.student_login'))    
-    return render_template('order.html', invoice = invoice, student = student, carts = carts, user = current_user)    
+    pass   
 
 
 @views.route('/admin_home')
