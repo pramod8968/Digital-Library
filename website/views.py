@@ -130,3 +130,7 @@ def dashboard():
 def edit_profile():
     return render_template("edit_profile.html", user=current_user)
 
+@views.route('/different')
+def different():
+    return render_template("different.html", user=current_user)    
+
