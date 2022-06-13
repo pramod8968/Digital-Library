@@ -52,7 +52,7 @@ def student_home():
         session['Shoppingcart'] = cart.carts
     else:
         try:
-        session.pop('Shoppingcart', None)
+            session.pop('Shoppingcart', None)
         except Exception as e:
             print(e)
     page = request.args.get('page',1, type=int)

@@ -1,8 +1,8 @@
-{% extends "base.html" %} {% block title %}Order{% endblock %}
+{% extends "base.html" %} {% block title %}Orders List{% endblock %}
 {% block content %} 
 <br>
 <b><center>
-    <h3>YOUR ORDERS</h3>
+    <h3>ORDERS LIST</h3>
 </center></b>
 <br>
 <div class="container">
@@ -11,6 +11,8 @@
         <table class="table table-sm">
             <thead>
                 <th>Sr</th>
+                <th>Student Name</th>
+                <th>Student USN</th>
                 <th>Book Name</th>
                 <th>ISBN</th>
                 <th>Request Date</th>
@@ -25,6 +27,8 @@
                 {% for order in orders %}
                 <tr>
                     <td>{{loop.index}}</td>
+                    <td>{{order.student.name}}</td>
+                    <td>{{order.student.usn}}</td>
                     <td>{{order.book.name}}</td>
                     <td>{{order.book.isbn}}</td>
                     <td>{{order.request_time.date()}}</td>
