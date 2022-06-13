@@ -3,6 +3,7 @@ from flask_login import login_required, current_user, logout_user
 
 from website.models import Student_Cart
 from .views import *
+from datetime import datetime
 
 cart = Blueprint('cart', __name__)
 
@@ -116,11 +117,23 @@ def emptycart():
         print(e)
 
 
-@cart.route('/order/<int:book_isbn>')
+@cart.route('/order/<int:book_id>')
 @login_required
 @requires_access_level("student")
-def order(book_isbn):
+def order(book_id):
     pass
+    if current_user.is_authenticated:
+        student_id = current_user.id
+    order = Student_Order.query.filter_by(student_id=student_id).first()
+    if(order.book_id==book_id and order.status in ["Requested","Issued"]):
+        flash(f"You have already ordered this book", 'danger')  
+        return redirect(url_for('views.student_home')) 
+    else:
+        order = Student_Order(student_id=student_id,book_id=book_id,request_time=datetime.now())
+        db.session.add(order)
+        db.session.commit()
+        flash(f"Your order request has been sent for Library Admin", 'success') 
+        return redirect(url_for('cart.getCart'))
     
 
 

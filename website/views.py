@@ -51,7 +51,10 @@ def student_home():
     if(cart):
         session['Shoppingcart'] = cart.carts
     else:
+        try:
         session.pop('Shoppingcart', None)
+        except Exception as e:
+            print(e)
     page = request.args.get('page',1, type=int)
     books = Addbook.query.filter(Addbook.stock>=0).order_by(Addbook.id.desc()).paginate(page = page, per_page = 8)
     return render_template("student_home.html", user=current_user, books = books, departments = departments(), semesters = semesters())
@@ -94,12 +97,13 @@ def get_semester(id):
     return render_template('student_home.html', semester = semester, user = current_user, semesters = semesters(), departments = departments(), get_sem = get_sem)    
 
 
-@views.route('/orders/<invoice>')
+@views.route('/orders')
 @login_required
 @requires_access_level("student")  
-def orders(invoice):
-    pass   
-
+def show_student_order():
+    student_id = current_user.id
+    orders = Student_Order.query.filter_by(student_id=student_id).all()
+    return render_template('book_orders.html',user=current_user,orders=orders)
 
 @views.route('/admin_home')
 @login_required

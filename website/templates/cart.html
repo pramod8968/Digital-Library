@@ -30,7 +30,7 @@
                     <td>{{book.department}}</td>
                     <td>{{book.semester}}</td>
                     <td>{{book.isbn}}</td>
-                    <td><a href="{{url_for('cart.order', book_isbn=book.isbn)}}" class="btn btn-sm btn-primary">Order</a></td>
+                    <td><a href="{{url_for('cart.order', book_id = key)}}" class="btn btn-sm btn-primary">Order</a></td>
                     <td><a href="{{url_for('cart.deleteitem', id=key)}}" class="btn btn-sm btn-danger">Delete</a></td>
                 </tr>
                 {% endfor %}
