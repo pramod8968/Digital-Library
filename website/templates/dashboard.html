@@ -3,10 +3,29 @@
 
 <br/>
 <br/>
-<center>
-   
-<div class="card">
-    <b>Hii Welcome to Dashboard</b>
-</div>
-</center>
+<div class="container">
+    <div class="row">
+        <div class="card" style="width: 30rem; margin: 0 auto;">
+            <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <h5><center><b>Welcome To Your Profile</b></center></h5>
+                </thead>
+                <hr>
+                <thead>   
+                    <p><b>Name:    </b> {{current_user.first_name}}</p>
+                    <hr>
+                    <p><b>Email:   </b> {{current_user.email}}</p>
+                    <hr>
+                    <p><b>USN:      </b> {{current_user.usn}}</p>
+                    <hr>
+                    <p><b>Department:    </b>  {{current_user.department.name}} </p>
+                    <hr>
+                    <p><b>Semester:      </b>  {{current_user.semester.name}}</p>
+                    <hr>
+                </thead> 
+            </div>
+            </div>
+            </div>
+            </div>
 {% endblock %}
