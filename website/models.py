@@ -101,14 +101,6 @@ class Student_Cart(db.Model):
 
         carts = db.Column(JsonEncodedDict)
 
-
-
-
-
-
-
-
-
 class Issues_data(db.Model):
         id = db.Column(db.Integer, primary_key = True)
         time_stamp = db.Column(db.DateTime,nullable=True)

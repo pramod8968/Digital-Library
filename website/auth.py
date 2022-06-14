@@ -14,6 +14,9 @@ def student_login():
         student_password = request.form.get('student_lpassword')
         user = User.query.filter_by(usn=susn).first()
         if user:
+            if(user.status=="Blocked"):
+                flash('Sorry, You have been blocked. Please contact Library Admin', category='error')
+                return render_template('student_login.html', user=current_user)  
             if check_password_hash(user.password,student_password):
                 flash('Logged in Successfully!', category='success')
                 login_user(user,remember=True)

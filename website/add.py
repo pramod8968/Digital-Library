@@ -216,16 +216,17 @@ def update_profile():
         db.session.commit()
         flash(f'Profile has been updated successfully', 'success')
         return redirect(url_for('views.student_home')) 
-    form.first_name.data = users.first_name   
-    form.email.data = users.email  
-    form.usn.data = users.usn
-    form.password.data = users.password
-    form.is_active.data = users.is_active
-    form.urole.data = users.urole
-    form.department.data = users.department
-    form.semester.data = users.semester
     return render_template('edit_profile.html', form = form, user=current_user, users = users )  
 
+@add.route('/user_update/<id>')
+def user_status(id):
+    user = User.query.get_or_404(id)
+    if(user.status=="Good"):
+        user.status="Blocked"
+    else:
+        user.status="Good"
+    db.session.commit()
+    return redirect(url_for('show.student_list'))
 
 
 
