@@ -84,7 +84,6 @@
                     </thead>
                     <tbody>
                     {% for order in orders%}
-                    <tr>
                         <td>{{loop.index}}</td>
                         <td>{{order.student.first_name}}</td>
                         <td>
@@ -179,7 +178,6 @@
                         </form>
                         </td>
                         {% endif %}
-                    </tr>
                     {% endfor %}
                     </tbody>
                 </table>

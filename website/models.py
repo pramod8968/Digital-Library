@@ -122,15 +122,17 @@ class Issues_data(db.Model):
 
 
 class Department(db.Model):
+        __searchable__ = ['name'] 
         id = db.Column(db.Integer, primary_key = True)
         name = db.Column(db.String(30), nullable = False, unique = True)
 
 class Semester(db.Model):
+        __searchable__ = ['name']
         id = db.Column(db.Integer, primary_key = True)
         name = db.Column(db.String(30), nullable = False, unique = True)
 
 class User(db.Model,UserMixin):
-
+        __searchable__ = ['usn']
         __tablename__='user'
         id = db.Column(db.Integer, primary_key=True)
         email = db.Column(db.String(150), unique=True)

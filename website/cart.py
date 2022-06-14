@@ -123,11 +123,20 @@ def emptycart():
 def order(book_id):
     if current_user.is_authenticated:
         student_id = current_user.id
-    order = Student_Order.query.filter_by(student_id=student_id).first()
-    if order:
-        if(order.book_id==book_id and order.status in ["Requested","Issued"]):
-            flash(f"You have already ordered this book", 'danger')  
-            return redirect(url_for('cart.getCart')) 
+    orders = Student_Order.query.filter_by(student_id=student_id).all() 
+    print(orders)
+    if orders:
+        for order in orders:
+            if(order.book_id==book_id and order.status in ["Requested","Issued"]):
+                flash(f"You have already ordered this book", 'danger')  
+                return redirect(url_for('cart.getCart')) 
+            else:
+                order = Student_Order(student_id=student_id,book_id=book_id,request_time=datetime.now())
+                db.session.add(order)
+                db.session.commit()
+                flash(f"Your order request has been sent for Library Admin", 'success') 
+                return redirect(url_for('views.show_student_order'))
+
     else:
         order = Student_Order(student_id=student_id,book_id=book_id,request_time=datetime.now())
         db.session.add(order)

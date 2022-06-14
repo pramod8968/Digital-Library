@@ -71,6 +71,27 @@ def result():
     #     return render_template('booknotfound.html',user=current_user) 
     return render_template('result.html', user=current_user, books=books, departments = departments(), semesters = semesters(),searchword = searchword)
 
+
+@views.route('/admin_result')
+def admin_result():
+    orders = Department.query.all()
+    search_department =request.args.get('d')
+    depts = Department.query.msearch(search_department, fields=['name'])
+    # print(search_department)
+    # search_semester =request.args.get('sem')
+    # sems = Semester.query.msearch(search_semester, fields=['name'])
+    # print(search_semester)
+    # search_book =request.args.get('b')
+    # books = Addbook.query.msearch(search_book, fields=['name'])
+    # print(search_book)
+    # search_usn =request.args.get('u')
+    # usn = User.query.msearch(search_usn, fields=['usn'])
+    # print(search_usn)
+    # sems= sems,books = books,usn=usn,
+    #  search_semester = search_semester,search_book = search_book, search_usn = search_usn
+    return render_template('admin_result.html',user = current_user, depts=depts, departments = departments(), semesters = semesters(),search_department = search_department)
+
+
 @views.route('/book/<int:id>')
 @login_required
 @requires_access_level("student")
