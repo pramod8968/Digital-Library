@@ -33,7 +33,9 @@
                     <td>{{order.returned_time}}</td>
                     <td style="color: red;">{{order.status}}</td>
                     <td></td>
+                    {% if order.status=="Requested" %}
                     <td><a href ="{{url_for('cart.cancel_order', order_id = order.id)}}" class="btn btn-danger btn-sm">Cancel Order</a></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
 

@@ -7,19 +7,18 @@
     <div class="row">
         <div class="col-md-6" id="b_image">
             <img src="{{url_for('static', filename = 'images/'+ book.image_1)}}" alt="{{book.name}}" width="400" height="400">
-
         </div>
         <div class="col-md-6">
             <div class="card">
             <h4>Book Name: {{book.name}} </h4>
             <hr>
-            <p><b>Department: {{book.department.name}} </b></p>
+            <p><b>Department:</b> {{book.department.name}}</p>
             <hr>
-            <p><b>Semester: {{book.semester.name}} </b></p>
+            <p><b>Semester:</b> {{book.semester.name}}</p>
             <hr>
-            <p><b>ISBN: {{book.isbn}} </b></p>
+            <p><b>ISBN:</b> {{book.isbn}}</p>
             <hr>
-            <p><b>Available Copies: {{book.stock}} </b></p>
+            <p><b>Available Copies:</b> {{book.stock}}</p>
             <hr>
             <b><u>Book Discription:</u></b><br>
             <p>{{book.desc}}</p>

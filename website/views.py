@@ -9,6 +9,7 @@ from .models import Department,Semester,Addbook, User , Student_Order, Student_C
 import secrets
 from functools import wraps
 from .track import uvt
+import datetime
 
 def requires_access_level(access_level):
     def decorator(f):
@@ -130,7 +131,25 @@ def dashboard():
 def edit_profile():
     return render_template("edit_profile.html", user=current_user)
 
-@views.route('/different')
-def different():
-    return render_template("different.html", user=current_user)    
+@views.route('/orders_list')
+def orders_list_for_admin():
+    orders = Student_Order.query.all()
+    return render_template("orders_list_for_admin.html", user=current_user,orders=orders)    
 
+@views.route('/orders_list/<status>', methods=['POST','GET'])
+def orders_list_on_status(status):
+    orders = Student_Order.query.filter_by(status=status)
+    if request.method == "POST":
+        status = request.form.get('status')
+        status = status.split(',')
+        id = int(status[1])
+        order = Student_Order.query.get_or_404(id)
+        order.status = status[0]
+        if(order.status=="Issued"):
+            order.approve_time=datetime.datetime.now()
+            return_date = datetime.datetime.now() + datetime.timedelta(days=7)
+            order.return_time=return_date
+        elif(order.status=="Returned"):
+            order.returned_time = datetime.datetime.now()
+        db.session.commit()
+    return render_template("orders_list_for_admin.html", user=current_user,orders=orders,status=status)    
