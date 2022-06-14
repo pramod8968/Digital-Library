@@ -66,6 +66,7 @@
                         <th>Student USN</th>
                         <th>Book Name</th>
                         <th>Book ISBN</th>
+                        <th>Available Copies</th>
                         {% if status=="Requested"%}
                         <th>Status Update</th>
                         <th>Request Date</th>
@@ -146,12 +147,15 @@
                             </div>
                         </td>
                         <td>{{order.book.isbn}}</td>
+                        <td>{{order.book.available_copies}}</td>
                         {% if(order.status == "Requested")%}
                         <td>
                             <form class="form" method="post" action="/orders_list/Requested">
                             <select name="status" id="status" class="form-control" required>
                                 <option value="">Requested</option>
+                                {% if order.book.available_copies > 0 %}
                                 <option value="Issued,{{order.id}}">Issue Book</option>
+                                {% endif %}
                                 <option value="Declined,{{order.id}}">Decline Request</option>
                             </select>
                         </td>

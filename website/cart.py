@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, session
 from flask_login import login_required, current_user, logout_user
 
 from website.models import Student_Cart
+from .track import notify_click_track
 from .views import *
 from datetime import datetime
 
@@ -24,7 +25,7 @@ def AddCart():
         book_id = request.form.get('book_id')
         book = Addbook.query.filter_by(id = book_id).first()
         if book_id and request.method == "POST":
-            DictItems = {book_id:{'name':book.name,'image':book.image_1, 'isbn':book.isbn, 'department':book.department.name, 'semester': book.semester.name}}
+            DictItems = {book_id:{'name':book.name,'image':book.image_1, 'isbn':book.isbn, 'department':book.department.name, 'semester': book.semester.name,'available_copies':book.available_copies}}
             if 'Shoppingcart' in session:
                 print(session['Shoppingcart'])
                 if book_id in session['Shoppingcart']:
@@ -124,18 +125,16 @@ def order(book_id):
     if current_user.is_authenticated:
         student_id = current_user.id
     orders = Student_Order.query.filter_by(student_id=student_id).all() 
-    print(orders)
     if orders:
         for order in orders:
             if(order.book_id==book_id and order.status in ["Requested","Issued"]):
                 flash(f"You have already ordered this book", 'danger')  
                 return redirect(url_for('cart.getCart')) 
-            else:
-                order = Student_Order(student_id=student_id,book_id=book_id,request_time=datetime.now())
-                db.session.add(order)
-                db.session.commit()
-                flash(f"Your order request has been sent for Library Admin", 'success') 
-                return redirect(url_for('views.show_student_order'))
+        order = Student_Order(student_id=student_id,book_id=book_id,request_time=datetime.now())
+        db.session.add(order)
+        db.session.commit()
+        flash(f"Your order request has been sent for Library Admin", 'success') 
+        return redirect(url_for('views.show_student_order'))
 
     else:
         order = Student_Order(student_id=student_id,book_id=book_id,request_time=datetime.now())
@@ -155,6 +154,15 @@ def cancel_order(order_id):
     db.session.commit()
     flash('Order cancelled successfully !!!','success')
     return redirect(url_for('views.show_student_order'))
+
+
+@cart.route('/notify_me/<id>')
+@login_required
+@requires_access_level("student")
+def notify(id):
+    notify_click_track(id)
+    return redirect(url_for('views.student_home'))
+
     
 
      

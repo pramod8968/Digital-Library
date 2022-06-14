@@ -17,7 +17,7 @@
                 <th>Issue Date</th>
                 <th>Return Date</th>
                 <th>Returned Date</th>
-                <th>Approval Status</th>
+                <th>Status</th>
                 <th>Fine Amount</th>
                 <th>Cancel Order</th>
             </thead>
@@ -28,11 +28,23 @@
                     <td>{{order.book.name}}</td>
                     <td>{{order.book.isbn}}</td>
                     <td>{{order.request_time.date()}}</td>
+                    {% if order.approve_time != None %}
+                    <td>{{order.approve_time.date()}}</td>
+                    {% else %}
                     <td>{{order.approve_time}}</td>
+                    {% endif %}
+                    {% if order.return_time != None %}
+                    <td>{{order.return_time.date()}}</td>
+                    {% else %}
                     <td>{{order.return_time}}</td>
+                    {% endif %}
+                    {% if order.returned_time != None %}
+                    <td>{{order.returned_time.date()}}</td>
+                    {% else %}
                     <td>{{order.returned_time}}</td>
+                    {% endif %}
                     <td style="color: red;">{{order.status}}</td>
-                    <td></td>
+                    <td>Fine</td>
                     {% if order.status=="Requested" %}
                     <td><a href ="{{url_for('cart.cancel_order', order_id = order.id)}}" class="btn btn-danger btn-sm">Cancel Order</a></td>
                     {% endif %}

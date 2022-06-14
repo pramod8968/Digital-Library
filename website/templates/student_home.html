@@ -73,7 +73,7 @@
                     <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
                 </form>
                 {% else %} 
-                <a href="#" class="float-right btn btn-sm btn-danger">Notify Me</a>
+                <a href="{{url_for('cart.notify',id = d.id)}}" class="float-right btn btn-sm btn-danger">Notify Me</a>
                 {% endif %}
             </div> 
         </div>
@@ -128,7 +128,7 @@
                     <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
                 </form>
                 {% else %} 
-                <a href="#" class="float-right btn btn-sm btn-danger">Notify Me</a>
+                <a href="{{url_for('cart.notify',id = s.id)}}" class="float-right btn btn-sm btn-danger">Notify Me</a>
                 {% endif %}
             </div> 
         </div>
@@ -182,7 +182,7 @@
                     <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
                 </form>
                 {% else %} 
-                <a href="#" class="float-right btn btn-sm btn-danger">Notify Me</a>
+                <a href="{{url_for('cart.notify',id = book.id)}}" class="float-right btn btn-sm btn-danger">Notify Me</a>
                 {% endif %}
             </div> 
         </div>

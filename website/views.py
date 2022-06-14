@@ -8,7 +8,7 @@ from website.forms import Addbooks
 from .models import Department,Semester,Addbook, User , Student_Order, Student_Cart
 import secrets
 from functools import wraps
-from .track import uvt
+from .track import uvt,issue_track
 import datetime
 
 def requires_access_level(access_level):
@@ -164,10 +164,17 @@ def orders_list_on_status(status):
         order = Student_Order.query.get_or_404(id)
         order.status = status[0]
         if(order.status=="Issued"):
+            book_id=order.book.id
+            book = Addbook.query.get_or_404(book_id)
+            book.available_copies = book.available_copies-1
             order.approve_time=datetime.datetime.now()
             return_date = datetime.datetime.now() + datetime.timedelta(days=7)
             order.return_time=return_date
+            issue_track(order.book.id)
         elif(order.status=="Returned"):
+            book_id=order.book.id
+            book = Addbook.query.get_or_404(book_id)
+            book.available_copies = book.available_copies+1
             order.returned_time = datetime.datetime.now()
         db.session.commit()
     return render_template("orders_list_for_admin.html", user=current_user,orders=orders,status=status)    

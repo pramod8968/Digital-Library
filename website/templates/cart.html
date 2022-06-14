@@ -30,7 +30,11 @@
                     <td>{{book.department}}</td>
                     <td>{{book.semester}}</td>
                     <td>{{book.isbn}}</td>
+                    {% if book.available_copies>0 %}
                     <td><a href="{{url_for('cart.order', book_id = key)}}" class="btn btn-sm btn-primary">Order</a></td>
+                    {% else %}
+                    <td><a href="{{url_for('cart.notify',id = key)}}" class="float-right btn btn-sm btn-danger">Notify Me When Available</a></td>
+                    {% endif %}
                     <td><a href="{{url_for('cart.deleteitem', id=key)}}" class="btn btn-sm btn-danger">Delete</a></td>
                 </tr>
                 {% endfor %}
