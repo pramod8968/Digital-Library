@@ -203,20 +203,17 @@ def addbookbulk():
 def update_profile():
     id = current_user.id
     users = User.query.get_or_404(id)
-    form = User(request.form)
     if request.method == "POST":
-        users.first_name = form.first_name.data
-        users.email = form.email.data 
-        users.usn = users.usn
-        users.password = users.password
-        users.is_active = users.is_active
-        users.urole = users.urole
-        users.department = users.department
-        users.semester = users.semester
-        db.session.commit()
-        flash(f'Profile has been updated successfully', 'success')
-        return redirect(url_for('views.student_home')) 
-    return render_template('edit_profile.html', form = form, user=current_user, users = users )  
+        if check_password_hash(users.password,request.form.get('password')):
+            users.first_name = request.form.get('sname')
+            users.email = request.form.get('semail') 
+            db.session.commit()
+            flash(f'Profile has been updated successfully', 'success')
+            return redirect(url_for('add.update_profile'))  
+        else:
+            flash('Please Enter Correct Password to update the profile!!', category='error')
+            return redirect(url_for('add.update_profile')) 
+    return render_template('edit_profile.html', user=current_user, users = users )  
 
 @add.route('/user_update/<id>')
 def user_status(id):
