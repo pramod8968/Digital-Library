@@ -141,6 +141,7 @@ class User(db.Model,UserMixin):
         is_active = db.Column(db.Boolean,default=False)
         urole = db.Column(db.String(80))
         usn = db.Column(db.String(10))
+        status = db.Column(db.String(10))
 
 
         department_id = db.Column(db.Integer, db.ForeignKey('department.id'),nullable=True)
@@ -149,7 +150,7 @@ class User(db.Model,UserMixin):
         semester_id = db.Column(db.Integer, db.ForeignKey('semester.id'),nullable=True)
         semester = db.relationship('Semester', backref=db.backref('user_semesters',lazy=True)) 
 
-        def __init__(self,first_name,password,email,is_active,urole,usn,department_id=0,semester_id=0):
+        def __init__(self,first_name,password,email,is_active,urole,usn,department_id=0,semester_id=0, status = "Good"):
                 self.first_name = first_name
                 self.password = password
                 self.email = email
@@ -158,6 +159,7 @@ class User(db.Model,UserMixin):
                 self.usn = usn
                 self.department_id = department_id
                 self.semester_id=semester_id
+                self.status = status
 
         def get_id(self):
                 return self.id

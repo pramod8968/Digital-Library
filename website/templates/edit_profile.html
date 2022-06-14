@@ -3,9 +3,36 @@
 
 <br/>
 <br/>
-<center>
-<div class="card">
-    <b>Edit Your Profile Information</b>
-</div>
-</center>
+<div class="container">
+    <div class="row">
+        <div class="card" style="width: 30rem; margin: 0 auto;">
+            <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <h5><center><b>Edit Your Profile</b></center></h5>
+                </thead>
+                <hr>
+                <form  class="form" method="POST" action="/update_profile">
+                <thead>   
+                    <label>Name</label><br>
+                        <input type="name" class="form-control" name="sname" value="{{current_user.first_name}}"><br>
+                        <label>Email</label><br>
+                        <input type="email" class="form-control" name="semail" value="{{current_user.email}}"><br>
+                        <label for="semester">Select Semester</label>
+                    <select name="semester" id="semester" class="form-control" required>
+                        <option value="{{current_user.semester_id}}">{{current_user.semester.name}}</option>
+                        {% for semester in semesters %} 
+                        <option value="{{semester.id}}">{{semester.name}}</option>
+                        {% endfor %} 
+                    </select>
+                    <br>
+                    <label>Enter Your Password</label><br>
+                    <input type="password" class="form-control" name="password" placeholder="Password"><br>
+                </thead> 
+                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+            </form>
+            </div>
+            </div>
+            </div>
+            </div>
 {% endblock %}

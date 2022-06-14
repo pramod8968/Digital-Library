@@ -148,9 +148,6 @@ def about_us():
 def dashboard():
     return render_template("dashboard.html", user=current_user)
 
-@views.route('/edit_profile')
-def edit_profile():
-    return render_template("edit_profile.html", user=current_user)
 
 @views.route('/orders_list')
 def orders_list_for_admin():

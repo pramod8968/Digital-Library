@@ -3,6 +3,7 @@ from .views import *
 import pandas as pd
 import os
 from flask import current_app
+from werkzeug.security import check_password_hash
 
 add = Blueprint('add', __name__)
 
@@ -195,3 +196,36 @@ def addbookbulk():
                 db.session.commit()
         flash('Books Data Added Successfully', category='success')  
     return render_template('addbulkbooks.html',user=current_user)
+
+
+@add.route('/update_profile',methods=['GET','POST'])
+@requires_access_level("student")
+def update_profile():
+    id = current_user.id
+    users = User.query.get_or_404(id)
+    form = User(request.form)
+    if request.method == "POST":
+        users.first_name = form.first_name.data
+        users.email = form.email.data 
+        users.usn = users.usn
+        users.password = users.password
+        users.is_active = users.is_active
+        users.urole = users.urole
+        users.department = users.department
+        users.semester = users.semester
+        db.session.commit()
+        flash(f'Profile has been updated successfully', 'success')
+        return redirect(url_for('views.student_home')) 
+    form.first_name.data = users.first_name   
+    form.email.data = users.email  
+    form.usn.data = users.usn
+    form.password.data = users.password
+    form.is_active.data = users.is_active
+    form.urole.data = users.urole
+    form.department.data = users.department
+    form.semester.data = users.semester
+    return render_template('edit_profile.html', form = form, user=current_user, users = users )  
+
+
+
+
