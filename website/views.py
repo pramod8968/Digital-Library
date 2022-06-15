@@ -19,7 +19,8 @@ from sqlalchemy import create_engine
 import sqlalchemy
 import sqlite3
 import numpy as np
-
+import pickle
+import sklearn
 
 import matplotlib
 matplotlib.use('Qt5agg')
@@ -211,6 +212,7 @@ def orders_list_on_status(status):
             book = Addbook.query.get_or_404(book_id)
             book.available_copies = book.available_copies-1
             order.approve_time=datetime.datetime.now()
+            order.number_of_copies=book.stock
             return_date = datetime.datetime.now() + datetime.timedelta(days=7)
             order.return_time=return_date
             issue_track(order.book.id)
@@ -218,12 +220,15 @@ def orders_list_on_status(status):
             book_id=order.book.id
             book = Addbook.query.get_or_404(book_id)
             book.available_copies = book.available_copies+1
+            order.number_of_copies=book.stock
             order.returned_time = datetime.datetime.now()
         db.session.commit()
     return render_template("orders_list_for_admin.html", user=current_user,orders=orders,status=status)    
 
 @views.route('/demand_graph/<book_ids>', methods=['POST','GET'])
 def show_demand_graph(book_ids):
+
+    model = pickle.load(open(f'Digital-Library\website\model.pickle','rb'))
     book = Addbook.query.get_or_404(book_ids)
 
     img = BytesIO()
@@ -231,6 +236,7 @@ def show_demand_graph(book_ids):
     df = pd.DataFrame(columns=['id','week_stamp','book_id','demand_time','dt','number_of_issues','number_notify_me','unique_visits','Demand','number_of_copies'])
     i = 0
     for stat in stats:
+        stat.demand = int(model.predict([[stat.dt,stat.number_of_copies,stat.number_of_issues,stat.number_notify_me,stat.unique_visits]])[0])
         df.loc[i] = [stat.id, stat.week_stamp, stat.book_id,stat.demand_time,stat.dt,stat.number_of_issues,stat.number_notify_me,stat.unique_visits,stat.demand,stat.number_of_copies] 
         i=i+1
     plot_df = df[['week_stamp','number_of_copies','Demand']]
@@ -258,6 +264,7 @@ def show_demand_graph(book_ids):
     plt.close()
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+    db.session.commit()
 
     return render_template("a.html",plot_url = plot_url,data_sums=data_sums)
 

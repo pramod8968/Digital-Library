@@ -50,7 +50,7 @@ class Stats(db.Model):
         number_of_issues = db.Column(db.Integer, default = 0)
         number_notify_me = db.Column(db.Integer, default = 0)
         unique_visits = db.Column(db.Integer, default= 0)
-        number_of_copies = db.Column(db.Integer,nullable = True)
+        number_of_copies = db.Column(db.Integer,default= 50)
         demand = db.Column(db.Float, default = 0)
 
         def __init__(self,book_id,week_stamp,demand_time="Normal",dt=0.1,number_of_issues=0,number_notify_me=0,unique_visits=0,demand=0,number_of_copies=0):
@@ -93,6 +93,7 @@ class Student_Order(db.Model):
 
         book_id = db.Column(db.Integer, db.ForeignKey('addbook.id'),nullable=True)
         book = db.relationship('Addbook', backref=db.backref('books_order',lazy=True))
+        fine = db.Column(db.Float,default=0)
 
 
 class Student_Cart(db.Model):
