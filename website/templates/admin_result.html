@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card mt-100">
-            <form class="d-flex" action="{{url_for('views.admin_result')}}">
+            <form class="d-flex" action="{{url_for('views.admin_orders_book_search',status=status)}}">
                 <input class="form-control me-2" type="search" placeholder="Search Department" aria-label="Search" name="d">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>  
@@ -15,7 +15,7 @@
 
     <div class="col-md-3">
         <div class="card mt-100">
-        <form class="d-flex" action="{{url_for('views.admin_result')}}">
+        <form class="d-flex" action="{{url_for('views.admin_orders_book_search',status=status)}}">
             <input class="form-control me-2" type="search" placeholder="Search Semester" aria-label="Search" name="sem">
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>  
@@ -24,7 +24,7 @@
 
     <div class="col-md-3">
         <div class="card mt-100">
-        <form class="d-flex" action="{{url_for('views.admin_result')}}">
+        <form class="d-flex" action="{{url_for('views.admin_orders_book_search', status=status)}}">
             <input class="form-control me-2" type="search" placeholder="Search Book" aria-label="Search" name="b">
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>  
@@ -33,7 +33,7 @@
 
     <div class="col-md-3">
         <div class="card mt-100">
-        <form class="d-flex" action="{{url_for('views.admin_result')}}">
+        <form class="d-flex" action="{{url_for('views.admin_orders_usn_search',status=status)}}">
             <input class="form-control me-2" type="search" placeholder="Search USN" aria-label="Search" name="u">
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>  
@@ -83,7 +83,8 @@
                         {% endif %}
                     </thead>
                     <tbody>
-                    {% for order in orders%}
+                    {% for order in result_ordered_book%}
+                    <tr>
                         <td>{{loop.index}}</td>
                         <td>{{order.student.first_name}}</td>
                         <td>
@@ -178,7 +179,111 @@
                         </form>
                         </td>
                         {% endif %}
+                    </tr>
                     {% endfor %}
+
+
+
+
+                    {% for order in result_usn %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{order.student.first_name}}</td>
+                        <td>
+                            <button type="button" class="btn btn" data-toggle="modal" data-target="#student_info">{{order.student.usn}}</button>
+                            <!-- Modal for student -->
+                            <div class="modal fade" id="student_info" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background:black;">
+                                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: orange;">Student Details</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white;">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>{{order.student.first_name}} </h4>
+                                        <hr>
+                                        <p><b>Department:</b> {{order.student.department.name}}</p>
+                                        <p><b>Semester:</b> {{order.student.semester.name}} </p>
+                                        <p><b>USN:</b> {{order.student.usn}} </p>
+                                        <p><b>Email:</b> {{order.student.email}}</p> 
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn" data-toggle="modal" data-target="#book_into_modal">{{order.book.name}}</button>
+                            <!--Modal for Books-->
+                            <div class="modal fade" id="book_into_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background:black;">
+                                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: orange;">Book Details</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    <div class="modal-body">
+                                        <h4>{{order.book.name}} </h4>
+                                        <hr>
+                                        <p><b>Department:</b> {{order.book.department.name}}</p>
+                                        <hr>
+                                        <p><b>Semester:</b> {{order.book.semester.name}} </p>
+                                        <hr>
+                                        <p><b>ISBN:</b> {{order.book.isbn}} </p>
+                                        <hr>
+                                        <p><b>Available Copies:</b> {{order.book.stock}}</p>
+                                        <hr>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{order.book.isbn}}</td>
+                        {% if(order.status == "Requested")%}
+                        <td>
+                            <form class="form" method="post" action="/orders_list/Requested">
+                            <select name="status" id="status" class="form-control" required>
+                                <option value="">Requested</option>
+                                <option value="Issued,{{order.id}}">Issue Book</option>
+                                <option value="Declined,{{order.id}}">Decline Request</option>
+                            </select>
+                        </td>
+                        <td>{{order.request_time.date()}}</td>
+                        {% elif(order.status == "Issued")%}
+                        <td>
+                            <form class="form" method="post" action="/orders_list/Issued">
+                            <select name="status" id="status" class="form-control" required>
+                                <option value="Issued">Issued</option>
+                                <option value="Returned,{{order.id}}">Returned</option>
+                                <option value="Lost,{{order.id}}">Lost</option>
+                            </select>
+                        </td>
+                        <td>{{order.approve_time.date()}}</td>
+                        <td>{{order.return_time.date()}}</td>
+                        <td>Fine</td>
+                        {% elif(order.status == "Returned")%}
+                        <td>{{order.approve_time.date()}}</td>
+                        <td>{{order.returned_time.date()}}</td>
+                        <td>Fine</td>
+                        {% endif %}
+                        {% if(order.status in ["Requested","Issued"])%}
+                        <td>
+                            <input type="submit" class="btn btn-primary" value="Update">
+                        </form>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+
                     </tbody>
                 </table>
     </div>

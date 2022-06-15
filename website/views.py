@@ -73,25 +73,43 @@ def result():
     #     return render_template('booknotfound.html',user=current_user) 
     return render_template('result.html', user=current_user, books=books, departments = departments(), semesters = semesters(),searchword = searchword)
 
+@views.route('/admin_home_result_for_book')
+@login_required
+@requires_access_level("admin")
+def admin_home_book_search():
+    search_book = request.args.get('a')
+    result_book = Addbook.query.msearch(search_book, fields = ['name'])
+    return render_template('admin_home_result.html', user = current_user,departments = departments(), semesters = semesters(), search_book = search_book, result_book = result_book )
 
-@views.route('/admin_result')
-def admin_result():
-    orders = Department.query.all()
-    search_department =request.args.get('d')
-    depts = Department.query.msearch(search_department, fields=['name'])
-    # print(search_department)
-    # search_semester =request.args.get('sem')
-    # sems = Semester.query.msearch(search_semester, fields=['name'])
-    # print(search_semester)
-    # search_book =request.args.get('b')
-    # books = Addbook.query.msearch(search_book, fields=['name'])
-    # print(search_book)
-    # search_usn =request.args.get('u')
-    # usn = User.query.msearch(search_usn, fields=['usn'])
-    # print(search_usn)
-    # sems= sems,books = books,usn=usn,
-    #  search_semester = search_semester,search_book = search_book, search_usn = search_usn
-    return render_template('admin_result.html',user = current_user, depts=depts, departments = departments(), semesters = semesters(),search_department = search_department)
+@views.route('/admin_home_result_for_isbn')
+@login_required
+@requires_access_level("admin")
+def admin_home_isbn_search():
+    search_isbn = request.args.get('i')
+    result_isbn = Addbook.query.msearch(search_isbn, fields = ['isbn'])
+    return render_template('admin_home_result.html', user = current_user,departments = departments(), semesters = semesters(), search_isbn = search_isbn, result_isbn = result_isbn )
+
+
+@views.route('/admin_orders_book_result/<status>/')
+def admin_orders_book_search(status):
+    search_ordered_book =request.args.get('b')
+    result_ordered_book = Addbook.query.msearch(search_ordered_book, fields=['name'])
+    li = []
+    for book in result_ordered_book:
+        li.append(book.id) 
+    orders = Student_Order.query.filter(Student_Order.book_id.in_(li),Student_Order.status==status)
+    return render_template('admin_result.html',user = current_user, result_ordered_book=orders, status = status, departments = departments(), semesters = semesters(),search_ordered_book = search_ordered_book)
+
+
+@views.route('/admin_orders_usn_result/<status>/')
+def admin_orders_usn_search(status):
+    search_usn =request.args.get('u')
+    result_usn = User.query.msearch(search_usn, fields=['usn'])
+    li = []
+    for usn in result_usn:
+        li.append(usn.id) 
+    orders = Student_Order.query.filter(Student_Order.student_id.in_(li),Student_Order.status==status)
+    return render_template('admin_result.html',user = current_user, result_usn=orders, status = status, departments = departments(), semesters = semesters(),search_usn = search_usn)
 
 
 @views.route('/book/<int:id>')
