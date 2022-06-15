@@ -10,7 +10,22 @@ import secrets
 from functools import wraps
 from .track import uvt,issue_track
 import datetime
-from .demand import demand_graph
+
+
+import pandas as pd
+from .models import Stats
+from sqlalchemy import create_engine
+import sqlalchemy
+import sqlite3
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import os
+from flask import current_app
+from io import BytesIO
+import base64
+
 
 def requires_access_level(access_level):
     def decorator(f):
@@ -201,10 +216,38 @@ def orders_list_on_status(status):
         db.session.commit()
     return render_template("orders_list_for_admin.html", user=current_user,orders=orders,status=status)    
 
-
 @views.route('/demand_graph/<book_ids>', methods=['POST','GET'])
 def show_demand_graph(book_ids):
     book = Addbook.query.get_or_404(book_ids)
-    book_stats = Stats.query.filter_by(book_id=book_ids)
-    demand_graph(book)
+
+    img = BytesIO()
+    stats = Stats.query.filter_by(book_id=book.id).all()
+    df = pd.DataFrame(columns=['id','week_stamp','book_id','demand_time','dt','number_of_issues','number_notify_me','unique_visits','Demand','number_of_copies'])
+    i = 0
+    for stat in stats:
+        df.loc[i] = [stat.id, stat.week_stamp, stat.book_id,stat.demand_time,stat.dt,stat.number_of_issues,stat.number_notify_me,stat.unique_visits,stat.demand,stat.number_of_copies] 
+        i=i+1
+    plot_df = df[['week_stamp','number_of_copies','Demand']]
+
+    data_sums = df.sum(axis = 0, skipna = True)
+    print(sums)
+    demand_mean = [np.mean(df.Demand)]*len(plot_df)
+    demand_mean_value = plot_df['Demand'].rolling(window=12).mean()
+
+    nc_mean_value = plot_df['number_of_copies'].rolling(window=12).mean()
+
+    plt.plot(plot_df.Demand, label = "Demand")
+    plt.plot(plot_df.number_of_copies, label = "Number of Copies")
+    plt.plot(demand_mean_value, label = "Demand Mean Curve")
+    plt.plot(nc_mean_value, label = "Available Copies Mean Curve")
+
+    plt.legend()
+    # plt.show()
+    plt.savefig(img, format='png')
+    plt.close()
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+
+    return render_template("a.html",plot_url = plot_url,data_sums)
+
 

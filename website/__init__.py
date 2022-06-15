@@ -13,7 +13,6 @@ db = SQLAlchemy()
 DB_NAME="database.db"
 search = Search()
 
-
 photos = UploadSet('photos', IMAGES)
 
 def create_app():
