@@ -41,7 +41,7 @@ def requires_access_level(access_level):
             if not current_user.is_authenticated:
                 flash('Login to Access', 'error')
                 return redirect(url_for('views.home'))
-            print(access_level)
+            # print(access_level)
             if current_user.get_urole() not in access_level:
                 logout_user()
                 flash('You do not have access to this resource. You have been automatically Logged Out', 'error')
@@ -222,6 +222,12 @@ def orders_list_on_status(status):
             book.available_copies = book.available_copies+1
             order.number_of_copies=book.stock
             order.returned_time = datetime.datetime.now()
+            delay = order.returned_time.date() - order.return_time.date()
+            if(delay.days>0):
+                fine = delay.days*10
+            else:
+                fine = 0
+            order.fine = fine
         db.session.commit()
     return render_template("orders_list_for_admin.html", user=current_user,orders=orders,status=status)    
 
@@ -266,6 +272,6 @@ def show_demand_graph(book_ids):
     plot_url = base64.b64encode(img.getvalue()).decode('utf8')
     db.session.commit()
 
-    return render_template("a.html",plot_url = plot_url,data_sums=data_sums)
+    return render_template("demand_graph.html",plot_url = plot_url,book=book,data_sums=data_sums)
 
 

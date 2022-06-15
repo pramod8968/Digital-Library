@@ -56,7 +56,7 @@ def teacher_login():
             if check_password_hash(user.password,teacher_password):
                 flash('Logged in Successfully!', category='success')
                 login_user(user,remember=True)
-                return redirect(url_for('views.teacher_home'))
+                return redirect(url_for('views.student_home'))
             else:
                 flash('Incorrect Password, try again.', category='error')
         else:
@@ -126,7 +126,7 @@ def teacher_registration():
             flash('Password must be at least 7 characters length',category='error')
         
         else:
-            new_user = User(email=teacher_uemail, first_name=teacher_uname, password=generate_password_hash(teacher_upassword1, method='sha256'), urole = "teacher",is_active=True,usn="Teacher")
+            new_user = User(email=teacher_uemail, first_name=teacher_uname, password=generate_password_hash(teacher_upassword1, method='sha256'), urole = "student",is_active=True,usn="Teacher")
             db.session.add(new_user)
             db.session.commit()
             flash("Teacher Account Created", category='success')

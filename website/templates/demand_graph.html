@@ -1,0 +1,25 @@
+<!doctype html>
+</html>
+<title>{{book.name}} </title>
+
+<div class="container" style="background-color: rgb(0, 186, 227);">
+  <div class="row">
+      <div class="card" style="width: 40rem; margin: 0 auto;">
+          <div class="card-body">
+            <table class="table table-sm">
+              <thead>
+                  <h2><center><b>Demand Graph</b></center></h2>
+              </thead>
+<section>
+  <center>
+  <h2>{{book.name}}</h2>
+</center>
+  <img src="data:image/png;base64, {{ plot_url }}">
+</section>
+
+<h3>Total Number of Book Issues: {{data_sums["number_of_issues"]}}</h3>
+</div>
+</div>
+</div>
+</div>
+<html>

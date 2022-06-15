@@ -171,11 +171,11 @@
                         </td>
                         <td>{{order.approve_time.date()}}</td>
                         <td>{{order.return_time.date()}}</td>
-                        <td>Fine</td>
+                        <td>{{order.fine}}</td>
                         {% elif(order.status == "Returned")%}
                         <td>{{order.approve_time.date()}}</td>
                         <td>{{order.returned_time.date()}}</td>
-                        <td>Fine</td>
+                        <td>{{order.fine}}</td>
                         {% endif %}
                         {% if(order.status in ["Requested","Issued"])%}
                         <td>
