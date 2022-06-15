@@ -26,7 +26,7 @@ import matplotlib
 matplotlib.use('Qt5agg')
 import matplotlib.pyplot as plt
 
-import seaborn as sns
+
 import pandas as pd
 import os
 from flask import current_app
@@ -166,7 +166,7 @@ def get_semester(id):
 @requires_access_level(["student","admin"])  
 def show_student_order():
     student_id = current_user.id
-    orders = Student_Order.query.filter_by(student_id=student_id).all()
+    orders = Student_Order.query.filter_by(student_id=student_id).order_by(Student_Order.request_time.desc())
     return render_template('book_orders.html',user=current_user,orders=orders)
 
 @views.route('/admin_home')
@@ -194,13 +194,13 @@ def dashboard():
 @views.route('/orders_list')
 @requires_access_level("admin")
 def orders_list_for_admin():
-    orders = Student_Order.query.all()
+    orders = Student_Order.query.order_by(Student_Order.request_time.desc()).all()
     return render_template("orders_list_for_admin.html", user=current_user,orders=orders)    
 
 @views.route('/orders_list/<status>', methods=['POST','GET'])
 @requires_access_level("admin")
 def orders_list_on_status(status):
-    orders = Student_Order.query.filter_by(status=status)
+    orders = Student_Order.query.filter_by(status=status).order_by(Student_Order.request_time.desc())
     if request.method == "POST":
         status = request.form.get('status')
         status = status.split(',')
