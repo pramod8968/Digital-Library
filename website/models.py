@@ -50,9 +50,10 @@ class Stats(db.Model):
         number_of_issues = db.Column(db.Integer, default = 0)
         number_notify_me = db.Column(db.Integer, default = 0)
         unique_visits = db.Column(db.Integer, default= 0)
+        number_of_copies = db.Column(db.DateTime,nullable = True)
         demand = db.Column(db.Float, default = 0)
 
-        def __init__(self,book_id,week_stamp,demand_time="Normal",dt=0.1,number_of_issues=0,number_notify_me=0,unique_visits=0,demand=0):
+        def __init__(self,book_id,week_stamp,demand_time="Normal",dt=0.1,number_of_issues=0,number_notify_me=0,unique_visits=0,demand=0,number_of_copies=0):
                 self.book_id=book_id
                 self.week_stamp=week_stamp
                 self.demand_time=demand_time
@@ -61,6 +62,7 @@ class Stats(db.Model):
                 self.number_notify_me=number_notify_me
                 self.unique_visits=unique_visits
                 self.demand=demand
+                self.number_of_copies = number_of_copies
 
 
 class JsonEncodedDict(db.TypeDecorator):
