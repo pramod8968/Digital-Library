@@ -11,6 +11,7 @@ from functools import wraps
 from .track import uvt,issue_track
 import datetime
 
+from matplotlib.figure import Figure
 
 import pandas as pd
 from .models import Stats
@@ -18,7 +19,12 @@ from sqlalchemy import create_engine
 import sqlalchemy
 import sqlite3
 import numpy as np
+
+
+import matplotlib
+matplotlib.use('Qt5agg')
 import matplotlib.pyplot as plt
+
 import seaborn as sns
 import pandas as pd
 import os
@@ -230,7 +236,6 @@ def show_demand_graph(book_ids):
     plot_df = df[['week_stamp','number_of_copies','Demand']]
 
     data_sums = df.sum(axis = 0, skipna = True)
-    print(sums)
     demand_mean = [np.mean(df.Demand)]*len(plot_df)
     demand_mean_value = plot_df['Demand'].rolling(window=12).mean()
 
@@ -241,13 +246,19 @@ def show_demand_graph(book_ids):
     plt.plot(demand_mean_value, label = "Demand Mean Curve")
     plt.plot(nc_mean_value, label = "Available Copies Mean Curve")
 
+    # fig = Figure()
+    # ax = fig.subplots()
+    # ax.plot(plot_df.Demand, label = "Demand")
+    # ax.plot(plot_df.number_of_copies, label = "Number of Copies")
+    # ax.plot(demand_mean_value, label = "Demand Mean Curve")
+    # ax.plot(nc_mean_value, label = "Available Copies Mean Curve")
+
     plt.legend()
-    # plt.show()
     plt.savefig(img, format='png')
     plt.close()
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode('utf8')
 
-    return render_template("a.html",plot_url = plot_url,data_sums)
+    return render_template("a.html",plot_url = plot_url,data_sums=data_sums)
 
 
