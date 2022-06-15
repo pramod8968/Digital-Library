@@ -27,8 +27,10 @@ def AddCart():
         if book_id and request.method == "POST":
             DictItems = {book_id:{'name':book.name,'image':book.image_1, 'isbn':book.isbn, 'department':book.department.name, 'semester': book.semester.name,'available_copies':book.available_copies}}
             if 'Shoppingcart' in session:
+                pass
                 # print(session['Shoppingcart'])
                 if book_id in session['Shoppingcart']:
+                    pass
                     # print("This product is already in your cart")
                 else:
                     session['Shoppingcart'] = MagerDicts(session['Shoppingcart'], DictItems)

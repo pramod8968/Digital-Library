@@ -5,11 +5,12 @@ from flask import url_for
 from numpy import product
 from . import db,photos,search
 from website.forms import Addbooks
-from .models import Department,Semester,Addbook, User , Student_Order, Student_Cart
+from .models import Department,Semester,Addbook, User , Student_Order, Student_Cart,Stats
 import secrets
 from functools import wraps
 from .track import uvt,issue_track
 import datetime
+from .demand import demand_graph
 
 def requires_access_level(access_level):
     def decorator(f):
@@ -181,3 +182,10 @@ def orders_list_on_status(status):
             order.returned_time = datetime.datetime.now()
         db.session.commit()
     return render_template("orders_list_for_admin.html", user=current_user,orders=orders,status=status)    
+
+
+@views.route('/demand_graph/<book_id>', methods=['POST','GET'])
+def show_demand_graph(book_id):
+    book = Addbook.query.get_or_404(book_id)
+    book_stats = Stats.query.filter_by(book_id=book_id).all()
+    demand_graph(book,book_stats)
