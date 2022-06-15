@@ -66,7 +66,72 @@
       <tr>
         <td>{{loop.index}}</td>
         <td>{{book.isbn}}</td>
-        <td>{{book.name}}</td>
+        <td>
+          <button type="button" class="btn btn" data-toggle="modal" data-target="#book_into_modal+{{book.isbn}}">{{book.name}}</button>
+          <!--Modal for Books-->
+          <div class="modal fade" id="book_into_modal+{{book.isbn}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                  <div class="modal-header" style="background:black;">
+                      <h5 class="modal-title" id="exampleModalLongTitle" style="color: orange;">Book Details</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white;">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      </div>
+                      {% if book.available_copies>0%}
+                      <button type="button" class="btn btn-primary btn-block btn-lg" data-toggle="modal" data-target="#book_order+{{book.isbn}}">Order</button>
+                      {% else %}
+                      <button type="button" class="btn btn-primary btn-block btn-lg" data-toggle="modal">No Copies to Orders</button>
+                      {% endif %}
+                        <div class="modal fade" id="book_order+{{book.isbn}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header" style="background:black;">
+                                  <h5 class="modal-title" id="exampleModalLongTitle" style="color: orange;">Order Book</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white;">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                                  </div>
+                              <div class="modal-body">
+                                <form class="grid" action="/order/{{book.id}}" method="POST">
+                                  <label>Student USN</label><br>
+                                  <input type="name" class="form-control" name="usn" placeholder="Enter Student USN"><br>
+                                  <input type="submit" class="btn btn-primary btn-block btn-lg" value="order">
+                                </form>
+                                </div>
+                          </div>
+                          </div></div>
+                  <div class="modal-body">
+                      <h4>{{book.name}} </h4>
+                      <hr>
+                      <p><b>Department:</b> {{book.department.name}}</p>
+                      <hr>
+                      <p><b>Semester:</b> {{book.semester.name}} </p>
+                      <hr>
+                      <p><b>ISBN:</b> {{book.isbn}} </p>
+                      <hr>
+                      <p><b>Price:</b> {{book.price}} </p>
+                      <hr>
+                      <p><b>Available Copies:</b> {{book.available_copies}}</p>
+                      <hr>
+                      <p><b>Stock:</b> {{book.stock}}</p>
+                      <hr>
+                      <p><b>Description:</b> {{book.desc}}</p>
+                      <hr>
+                      <p><b>Book Added Date:</b> {{book.pub_date}}</p>
+                      <hr>
+                      <div class="col-md-6" id="b_image">
+                        <img src="{{url_for('static', filename = 'images/'+ book.image_1)}}" alt="{{book.name}}" width="400" height="400">
+                    </div>
+
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+              </div>
+              </div>
+          </div>
+        </td>
         <td>{{book.price}}</td>
         <td>{{book.available_copies}}</td>
         <td>{{book.stock}}</td>

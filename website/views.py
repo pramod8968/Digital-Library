@@ -18,7 +18,8 @@ def requires_access_level(access_level):
             if not current_user.is_authenticated:
                 flash('Login to Access', 'error')
                 return redirect(url_for('views.home'))
-            if current_user.get_urole()!=access_level:
+            print(access_level)
+            if current_user.get_urole() not in access_level:
                 logout_user()
                 flash('You do not have access to this resource. You have been automatically Logged Out', 'error')
                 return redirect(url_for('views.home'))
@@ -94,7 +95,7 @@ def admin_result():
 
 @views.route('/book/<int:id>')
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def single_page(id):
     uvt(id)
     book = Addbook.query.get_or_404(id)
@@ -102,7 +103,7 @@ def single_page(id):
 
 @views.route('/department/<int:id>')
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def get_department(id):
     page = request.args.get('page',1, type=int)
     get_dep = Department.query.filter_by(id=id).first_or_404()
@@ -111,7 +112,7 @@ def get_department(id):
 
 @views.route('/semester/<int:id>')
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def get_semester(id):
     page = request.args.get('page',1, type=int)
     get_sem = Semester.query.filter_by(id=id).first_or_404()
@@ -121,7 +122,7 @@ def get_semester(id):
 
 @views.route('/orders')
 @login_required
-@requires_access_level("student")  
+@requires_access_level(["student","admin"])  
 def show_student_order():
     student_id = current_user.id
     orders = Student_Order.query.filter_by(student_id=student_id).all()
@@ -150,11 +151,13 @@ def dashboard():
 
 
 @views.route('/orders_list')
+@requires_access_level("admin")
 def orders_list_for_admin():
     orders = Student_Order.query.all()
     return render_template("orders_list_for_admin.html", user=current_user,orders=orders)    
 
 @views.route('/orders_list/<status>', methods=['POST','GET'])
+@requires_access_level("admin")
 def orders_list_on_status(status):
     orders = Student_Order.query.filter_by(status=status)
     if request.method == "POST":

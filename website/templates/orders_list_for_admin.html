@@ -89,9 +89,9 @@
                         <td>{{loop.index}}</td>
                         <td>{{order.student.first_name}}</td>
                         <td>
-                            <button type="button" class="btn btn" data-toggle="modal" data-target="#student_info">{{order.student.usn}}</button>
+                            <button type="button" class="btn btn" data-toggle="modal" data-target="#student_info+{{order.student.usn}}">{{order.student.usn}}</button>
                             <!-- Modal for student -->
-                            <div class="modal fade" id="student_info" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal fade" id="student_info+{{order.student.usn}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header" style="background:black;">
@@ -116,9 +116,9 @@
                             </div>
                         </td>
                         <td>
-                            <button type="button" class="btn btn" data-toggle="modal" data-target="#book_into_modal">{{order.book.name}}</button>
+                            <button type="button" class="btn btn" data-toggle="modal" data-target="#book_into_modal+{{order.book.isbn}}">{{order.book.name}}</button>
                             <!--Modal for Books-->
-                            <div class="modal fade" id="book_into_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal fade" id="book_into_modal+{{order.book.isbn}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header" style="background:black;">
@@ -136,7 +136,7 @@
                                         <hr>
                                         <p><b>ISBN:</b> {{order.book.isbn}} </p>
                                         <hr>
-                                        <p><b>Available Copies:</b> {{order.book.stock}}</p>
+                                        <p><b>Available Copies:</b> {{order.book.available_copies}}</p>
                                         <hr>
                                     </div>
                                     <div class="modal-footer">

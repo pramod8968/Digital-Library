@@ -17,7 +17,7 @@ def MagerDicts(dict1, dict2):
 
 @cart.route('/addtocart', methods = ['POST'])
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def AddCart():
     if current_user.is_authenticated:
         student_id = current_user.id
@@ -27,9 +27,9 @@ def AddCart():
         if book_id and request.method == "POST":
             DictItems = {book_id:{'name':book.name,'image':book.image_1, 'isbn':book.isbn, 'department':book.department.name, 'semester': book.semester.name,'available_copies':book.available_copies}}
             if 'Shoppingcart' in session:
-                print(session['Shoppingcart'])
+                # print(session['Shoppingcart'])
                 if book_id in session['Shoppingcart']:
-                    print("This product is already in your cart")
+                    # print("This product is already in your cart")
                 else:
                     session['Shoppingcart'] = MagerDicts(session['Shoppingcart'], DictItems)
                     cart = Student_Cart.query.filter_by(student_id = student_id).first()
@@ -62,7 +62,7 @@ def AddCart():
 
 @cart.route('/cart')     
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def getCart():
     if current_user.is_authenticated:
         student_id = current_user.id
@@ -74,7 +74,7 @@ def getCart():
 
 @cart.route('/deleteitem/<int:id>')
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def deleteitem(id):
     if current_user.is_authenticated:
         student_id = current_user.id
@@ -103,7 +103,7 @@ def deleteitem(id):
 
 @cart.route('/emptycart')
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def emptycart():
     if current_user.is_authenticated:
         student_id = current_user.id
@@ -118,24 +118,44 @@ def emptycart():
         print(e)
 
 
-@cart.route('/order/<int:book_id>')
+@cart.route('/order/<int:book_id>', methods=["GET","POST"])
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def order(book_id):
     if current_user.is_authenticated:
-        student_id = current_user.id
+        if(current_user.urole=="admin"):
+            book = Addbook.query.get_or_404(book_id)
+            if(book.available_copies==0):
+                flash("No Copies Available", 'danger')  
+                return redirect(url_for('views.admin_home'))
+            usn = request.form.get("usn")
+            student = User.query.filter_by(usn=usn).first()
+            if(student):
+                student_id=student.id
+            else:
+                flash("No student with Given USN", 'danger')  
+                return redirect(url_for('views.admin_home'))
+        else:
+            student_id = current_user.id
+        role = current_user.urole
     orders = Student_Order.query.filter_by(student_id=student_id).all() 
     if orders:
         for order in orders:
             if(order.book_id==book_id and order.status in ["Requested","Issued"]):
                 flash(f"You have already ordered this book", 'danger')  
-                return redirect(url_for('cart.getCart')) 
+                if(role in ["student","teacher"]):
+                    return redirect(url_for('cart.getCart')) 
+                else:
+                    return redirect(url_for('views.admin_home'))
         order = Student_Order(student_id=student_id,book_id=book_id,request_time=datetime.now())
         db.session.add(order)
         db.session.commit()
-        flash(f"Your order request has been sent for Library Admin", 'success') 
-        return redirect(url_for('views.show_student_order'))
-
+        if(role in ["student","teacher"]):
+            flash(f"Your order request has been sent for Library Admin", 'success') 
+            return redirect(url_for('views.show_student_order'))
+        else:
+            flash(f"Book Order placed successfully", 'success') 
+            return redirect(url_for('views.admin_home'))
     else:
         order = Student_Order(student_id=student_id,book_id=book_id,request_time=datetime.now())
         db.session.add(order)
@@ -147,7 +167,7 @@ def order(book_id):
 
 @cart.route('/cancel_order/<int:order_id>')
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def cancel_order(order_id):
     order = Student_Order.query.get_or_404(order_id)
     db.session.delete(order)
@@ -158,7 +178,7 @@ def cancel_order(order_id):
 
 @cart.route('/notify_me/<id>')
 @login_required
-@requires_access_level("student")
+@requires_access_level(["student","admin"])
 def notify(id):
     notify_click_track(id)
     return redirect(url_for('views.student_home'))
