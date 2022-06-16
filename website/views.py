@@ -10,6 +10,9 @@ import secrets
 from functools import wraps
 from .track import uvt,issue_track
 import datetime
+import os
+
+basedir=os.path.abspath(os.path.dirname(__file__))
 
 from matplotlib.figure import Figure
 
@@ -234,7 +237,8 @@ def orders_list_on_status(status):
 @views.route('/demand_graph/<book_ids>', methods=['POST','GET'])
 def show_demand_graph(book_ids):
 
-    model = pickle.load(open(f'Digital-Library\website\model.pickle','rb'))
+    file = open(basedir+"/model.pickle",'rb')
+    model = pickle.load(file)
     book = Addbook.query.get_or_404(book_ids)
 
     img = BytesIO()
