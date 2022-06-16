@@ -14,6 +14,6 @@ SQLAlchemy==1.3.13
 Werkzeug==2.0.0
 WTForms==2.2.1
 MarkupSafe==2.1.1
-tk
+python-tk
 jinja2==3.0
 gunicorn
