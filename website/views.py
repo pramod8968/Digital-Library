@@ -11,7 +11,7 @@ from functools import wraps
 from .track import uvt,issue_track
 import datetime
 import os
-
+import PyQt5
 basedir=os.path.abspath(os.path.dirname(__file__))
 
 from matplotlib.figure import Figure
