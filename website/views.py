@@ -280,6 +280,6 @@ def show_demand_graph(book_ids):
     # plot_url = base64.b64encode(img.getvalue()).decode('utf8')
     db.session.commit()
 
-    return render_template("demand_graph.html",plot_url = plot_url,book=book,data_sums=data_sums)
+    return render_template("demand_graph.html",plot_url = plot_url,book=book,data_sums=data_sums, user=current_user)
 
 

@@ -190,7 +190,7 @@ def addbookbulk():
                 department = int(df.loc[df["isbn"]==isbn, 'department_id'].values[0])
                 semester = int(df.loc[df["isbn"]==isbn, 'semester_id'].values[0])
                 image_1 = "No IMG"
-                addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG")
+                addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG",available_copies=stock)
                 db.session.add(addpro)
                 db.session.commit()
         flash('Books Data Added Successfully', category='success')  
