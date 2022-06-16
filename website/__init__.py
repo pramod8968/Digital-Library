@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
-from flask_reuploaded import IMAGES, UploadSet, configure_uploads
+from flask_uploads import IMAGES, UploadSet, configure_uploads
 from flask_msearch import Search
 
 import os
