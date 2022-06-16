@@ -19,7 +19,7 @@ def create_app():
     app = Flask(__name__)
     app.config['RBAC_USE_WHITE'] = True
     app.config['SECRET_KEY']='Darshan D M Project 1'
-    app.config['SQLALCHEMY_DATABASE_URI']= f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI']= "postgres://aqtemsqdiuebgt:a92569ef88fb8e5fa3d4776d4053df570152b2487b53d46d9512e96e4a088065@ec2-54-157-16-196.compute-1.amazonaws.com:5432/df2dp861v84ioa"
     app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static/images')
 
 
