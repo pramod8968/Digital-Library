@@ -62,12 +62,12 @@
                 <img src="{{url_for('static', filename = 'images/' + d.image_1)}}" alt="{{d.name}}" class="card-img-top" height="200">
                 <div class="card-body">
                     <h5 class="text-center">{{d.name}}</h5>
-                    <p class="text-center">Available Copies: {{d.stock}}</p>
+                    <p class="text-center">Available Copies: {{d.available_copies}}</p>
                 </div>
                 <div class="card-footer">
                     
                 <a href="{{url_for('views.single_page', id = d.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
-                {% if d.stock >0 %}
+                {% if d.available_copies >0 %}
                 <form action="{{url_for('cart.AddCart')}}" method="POST">
                     <input type="hidden" name="book_id" value="{{d.id}}">
                     <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
@@ -171,12 +171,12 @@
                 <img src="{{url_for('static', filename = 'images/' + book.image_1)}}" alt="{{book.name}}" class="card-img-top" height="200">
                 <div class="card-body">
                     <p class="text-center"><b>{{book.name}}</b></p>
-                    <p class="text-center">Available Copies: {{book.stock}}</p>
+                    <p class="text-center">Available Copies: {{book.available_copies}}</p>
                 </div>
                 <div class="card-footer">
                     
                 <a href="{{url_for('views.single_page', id = book.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
-                {% if book.stock >0 %}
+                {% if book.available_copies >0 %}
                 <form action="{{url_for('cart.AddCart')}}" method="POST">
                     <input type="hidden" name="book_id" value="{{book.id}}">
                     <button type="submit" class="btn btn-sm btn-warning float-right">Add to Cart</button>
