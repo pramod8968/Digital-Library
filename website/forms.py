@@ -9,6 +9,7 @@ class Addbooks(Form):
     isbn = IntegerField('ISBN', default=0)
     stock = IntegerField('Stock',[validators.DataRequired()])
     discription = TextAreaField('Discription',[validators.DataRequired()])
+    author = StringField('Author Name',[validators.DataRequired()])
 
     image_1 = FileField('Image 1', validators=[FileRequired(), FileAllowed(['jpg','png','gif','jpeg'],'images only please')])
     image_2 = FileField('Image 2', validators=[FileAllowed(['jpg','png','gif','jpeg'],'images only please')])

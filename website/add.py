@@ -103,12 +103,13 @@ def addbook():
         stock = form.stock.data 
         available_copies = stock
         desc = form.discription.data
+        author = form.author
         department = request.form.get('department')
         semester = request.form.get('semester') 
         image_1 = photos.save(request.files.get('image_1'),name=secrets.token_hex(10) + ".")       
         #image_2 = photos.save(request.files.get('image_2'),name=secrets.token_hex(10) + ".")
         #image_3 = photos.save(request.files.get('image_3'),name=secrets.token_hex(10) + ".")
-        addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG", available_copies = available_copies)
+        addpro = Addbook(name=name, price=price, isbn=isbn,stock=stock,desc=desc,department_id=department,semester_id=semester,image_1=image_1,image_2="No IMG",image_3="No IMG", available_copies = available_copies,author=author)
         flash(f'The book {name} has been added to your database','success')
         db.session.add(addpro)
         db.session.commit()
@@ -133,6 +134,7 @@ def updatebook(id):
         book.stock = form.stock.data 
         book.available_copies = book.available_copies + ac
         book.desc = form.discription.data
+        book.author = form.author
 
         if request.files.get('image_1'):
             try:
@@ -149,6 +151,7 @@ def updatebook(id):
     form.isbn.data = book.isbn
     form.stock.data = book.stock
     form.discription.data = book.desc
+    form.author.data = book.author
     return render_template('updatebook.html', form = form, user=current_user, departments = departments, semesters = semesters, book = book )
 
 @add.route('/deletebook/<int:id>', methods=['POST'])
