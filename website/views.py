@@ -93,7 +93,7 @@ def student_home():
 @requires_access_level("student")
 def result():
     searchword =request.args.get('q')
-    books = Addbook.query.msearch(searchword, fields=['name','desc', 'isbn'])
+    books = Addbook.query.msearch(searchword, fields=['name','desc', 'isbn','author'])
     # if searchword not in books:
     #     return render_template('booknotfound.html',user=current_user) 
     return render_template('result.html', user=current_user, books=books, departments = departments(), semesters = semesters(),searchword = searchword)
@@ -103,7 +103,7 @@ def result():
 @requires_access_level("admin")
 def admin_home_book_search():
     search_book = request.args.get('a')
-    result_book = Addbook.query.msearch(search_book, fields = ['name'])
+    result_book = Addbook.query.msearch(search_book, fields = ['name','author'])
     return render_template('admin_home_result.html', user = current_user,departments = departments(), semesters = semesters(), search_book = search_book, result_book = result_book )
 
 @views.route('/admin_home_result_for_isbn')
@@ -118,7 +118,7 @@ def admin_home_isbn_search():
 @views.route('/admin_orders_book_result/<status>/')
 def admin_orders_book_search(status):
     search_ordered_book =request.args.get('b')
-    result_ordered_book = Addbook.query.msearch(search_ordered_book, fields=['name'])
+    result_ordered_book = Addbook.query.msearch(search_ordered_book, fields=['name','author'])
     li = []
     for book in result_ordered_book:
         li.append(book.id) 
